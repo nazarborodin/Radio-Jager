@@ -1,0 +1,222 @@
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JAGER Radio</title>
+
+  <!-- Описание сайта -->
+  <meta name="description" content="JAGER Radio — 8 стилей электронной музыки без остановки: House, Techno, Dubstep, Trance, D&B, Lo-fi, Synthwave, Electro">
+
+  <!-- Open Graph / Превью в Telegram, WhatsApp, VK -->
+  <meta property="og:title" content="JAGER Radio">
+  <meta property="og:description" content="🎧 Слушай 8 стилей электронной музыки онлайн — House, Techno, Dubstep, Trance и другие">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nazarborodin.github.io/Radio-Jager">
+  <meta property="og:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg">
+
+  <!-- Twitter Card -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://nazarborodin.github.io/Radio-Jager">
+  <meta property="twitter:title" content="JAGER Radio">
+  <meta property="twitter:description" content="🎧 Электронная музыка 24/7 — выбери свой стиль">
+  <meta property="twitter:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg">
+
+  <!-- Favicon и PWA -->
+  <link rel="icon" href="preview.jpg" sizes="192x192">
+  <link rel="apple-touch-icon" href="preview.jpg">
+  <meta name="theme-color" content="#FFD700">
+
+  <!-- Шрифт -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #FFD700;
+      --text: #000;
+      --accent: #fff;
+      --border: #000;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--text);
+      text-align: center;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 50px;
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      width: 90%;
+      border: 2px solid var(--border);
+    }
+
+    .brand {
+      font-size: 3.5em;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: 3px;
+      margin: 5px 0 15px;
+    }
+
+    .genres {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    .genre-btn {
+      background: var(--accent);
+      color: #000;
+      border: 2px solid #000;
+      padding: 15px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 1.1em;
+      font-weight: 700;
+      box-shadow: 0 4px 0 #000;
+    }
+
+    .genre-btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .genre-btn.active {
+      background: #000;
+      color: #FFD700;
+    }
+
+    .play-controls button {
+      background: var(--accent);
+      color: #000;
+      border: 3px solid #000;
+      padding: 14px 30px;
+      font-size: 1.3em;
+      border-radius: 50px;
+      cursor: pointer;
+      margin: 15px 10px;
+      font-weight: 800;
+      box-shadow: 0 6px 0 #000;
+    }
+
+    .now-playing {
+      margin: 20px 0;
+      font-size: 1.3em;
+      font-weight: 700;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: 1.1em;
+      min-height: 24px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="brand">JAGER</h1>
+
+    <div class="genres" id="genres">
+      <button class="genre-btn active" data-genre="house">🏠 House</button>
+      <button class="genre-btn" data-genre="techno">🏭 Techno</button>
+      <button class="genre-btn" data-genre="dubstep">🔊 Dubstep</button>
+      <button class="genre-btn" data-genre="trance">🌀 Trance</button>
+      <button class="genre-btn" data-genre="dnb">🥁 D&B</button>
+      <button class="genre-btn" data-genre="lofi">🎧 Lo-fi</button>
+      <button class="genre-btn" data-genre="synthwave">📼 Synthwave</button>
+      <button class="genre-btn" data-genre="electro">⚡ Electro</button>
+    </div>
+
+    <div class="now-playing" id="nowPlaying">🎵 Трек не найден</div>
+
+    <div class="play-controls">
+      <button id="playBtn">▶ Запустить</button>
+      <button id="stopBtn" disabled>⏹ Стоп</button>
+    </div>
+    <div class="status" id="status">Выберите стиль</div>
+  </div>
+
+  <audio id="radioPlayer"></audio>
+
+  <script>
+    const genres = document.querySelectorAll('.genre-btn');
+    const playBtn = document.getElementById('playBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const status = document.getElementById('status');
+    const nowPlaying = document.getElementById('nowPlaying');
+    const audio = document.getElementById('radioPlayer');
+
+    // 🔉 Прямые ссылки на потоки
+    const streams = {
+      house:     "https://stream.radioparadise.com/house-128.mp3",
+      techno:    "https://icecast.tecnoarea.fm/tecnoarea-128.mp3",
+      dubstep:   "https://stream.radioparadise.com/metal-128.mp3",
+      trance:    "https://sunshinelive.streaming.plus/sunshinelive_trance_mp3_128.stream",
+      dnb:       "https://stream.radioparadise.com/dance-128.mp3",
+      lofi:      "https://listen.lol/lofi.mp3",
+      synthwave: "https://nightride.stream/radio/8010/radio.mp3",
+      electro:   "https://icecast.electroch.cz/electro128"
+    };
+
+    let currentGenre = localStorage.getItem('jager-genre') || 'house';
+
+    // Установка активного жанра
+    function setActive() {
+      genres.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.genre === currentGenre);
+      });
+      status.textContent = 'Готово к запуску';
+    }
+    setActive();
+
+    // Переключение жанра
+    genres.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentGenre = btn.dataset.genre;
+        localStorage.setItem('jager-genre', currentGenre);
+        setActive();
+        nowPlaying.textContent = '🎵 Ожидание...';
+        audio.pause();
+        playBtn.disabled = false;
+        stopBtn.disabled = true;
+      });
+    });
+
+    // Воспроизведение
+    playBtn.addEventListener('click', () => {
+      const streamUrl = streams[currentGenre];
+      audio.src = streamUrl;
+      audio.play()
+        .then(() => {
+          status.textContent = '🔊 Трансляция запущена';
+          nowPlaying.textContent = `🎧 Воспроизводится: ${currentGenre.toUpperCase()}`;
+          playBtn.disabled = true;
+          stopBtn.disabled = false;
+        })
+        .catch(err => {
+          status.textContent = '❌ Ошибка: ' + err.message;
+          nowPlaying.textContent = '⚠️ Не удалось запустить';
+        });
+    });
+
+    stopBtn.addEventListener('click', () => {
+      audio.pause();
+      status.textContent = '⏸ Остановлено';
+      playBtn.disabled = false;
+      stopBtn.disabled = true;
+    });
+  </script>
+</body>
+</html>
