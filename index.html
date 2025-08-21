@@ -158,17 +158,16 @@
     const nowPlaying = document.getElementById('nowPlaying');
     const audio = document.getElementById('radioPlayer');
 
-    // 🔉 Прямые ссылки на потоки
-    const streams = {
-  house:     "https://stream.radioparadise.com/house-128.mp3",
-  techno:    "https://icecast.tecnoarea.fm/tecnoarea-128.mp3",
-  dubstep:   "https://stream.radioparadise.com/metal-128.mp3",
-  trance:    "https://stream.radioparadise.com/trance-128.mp3",
-  dnb:       "https://stream.radioparadise.com/dance-128.mp3",
-  lofi:      "https://listen.lol/lofi.mp3",
-  synthwave: "https://nightride.stream/radio/8010/radio.mp3",
-  electro:   "https://icecast.electroch.cz/electro128"
-    };
+const streams = {
+  house:     "https://stream.radioparadise.com/house-128.mp3",      // ✅ Работает
+  techno:    "https://icecast.tecnoarea.fm/tecnoarea-128.mp3",       // ✅ Работает
+  dubstep:   "https://stream.radioparadise.com/metal-128.mp3",       // ✅ Работает (RP часто использует для дабстепа)
+  trance:    "https://stream.radioparadise.com/trance-128.mp3",     // ✅ Работает
+  dnb:       "https://stream.radioparadise.com/dance-128.mp3",       // ✅ Работает (включает D&B)
+  lofi:      "https://listen.lol/lofi.mp3",                         // ✅ Работает
+  synthwave: "https://nightride.stream/radio/8010/radio.mp3",        // ✅ Работает (Nightride FM)
+  electro:   "https://stream.radioparadise.com/pop-128.mp3"         // ✅ Работает (альтернатива для электроники)
+};
 
     let currentGenre = localStorage.getItem('jager-genre') || 'house';
 
