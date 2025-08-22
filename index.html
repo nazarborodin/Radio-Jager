@@ -1,11 +1,13 @@
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <link rel="icon" href="logo.png" sizes="192x192">
-  <link rel="apple-touch-icon" href="logo.png">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>JAGER Radio</title>
-  <!-- Остальные метатеги -->
+
+  <!-- Favicon -->
+  <link rel="icon" href="logo.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="logo.png">
 
   <!-- Описание сайта -->
   <meta name="description" content="JAGER Radio — 8 стилей электронной музыки без остановки: House, Techno, Dubstep, Trance, D&B, Lo-fi, Synthwave, Electro">
@@ -24,9 +26,7 @@
   <meta property="twitter:description" content="🎧 Электронная музыка 24/7 — выбери свой стиль">
   <meta property="twitter:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg">
 
-  <!-- Favicon и PWA -->
-  <link rel="icon" href="preview.jpg" sizes="192x192">
-  <link rel="apple-touch-icon" href="preview.jpg">
+  <!-- PWA -->
   <meta name="theme-color" content="#FFD700">
 
   <!-- Шрифт -->
@@ -132,7 +132,7 @@
     <h1 class="brand">JAGER</h1>
 
     <div class="genres" id="genres">
-      <button class="genre-btn active" data-genre="house">🏠 House</button>
+      <button class="genre-btn" data-genre="house">🏠 House</button>
       <button class="genre-btn" data-genre="techno">🏭 Techno</button>
       <button class="genre-btn" data-genre="dubstep">🔊 Dubstep</button>
       <button class="genre-btn" data-genre="trance">🌀 Trance</button>
@@ -153,116 +153,106 @@
 
   <audio id="radioPlayer"></audio>
 
-<script>
-  // Элементы DOM
-  const genres = document.querySelectorAll('.genre-btn');
-  const playBtn = document.getElementById('playBtn');
-  const stopBtn = document.getElementById('stopBtn');
-  const status = document.getElementById('status');
-  const nowPlaying = document.getElementById('nowPlaying'); // Если у вас есть этот элемент
-  const audio = document.getElementById('radioPlayer');
+  <script>
+    // Элементы DOM
+    const genres = document.querySelectorAll('.genre-btn');
+    const playBtn = document.getElementById('playBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const status = document.getElementById('status');
+    const nowPlaying = document.getElementById('nowPlaying');
+    const audio = document.getElementById('radioPlayer');
 
-  // 🔉 Прямые ссылки на потоки
-  const streams = {
-  house:     "https://ice4.somafm.com/beatblender-128-mp3",
-  techno:    "https://ice4.somafm.com/groovesalad-128-aac",
-  dubstep:   "https://ice2.somafm.com/n5md-128-mp3",
-  trance:    "https://stream.radioparadise.com/trance-128.mp3",
-  dnb:       "https://stream.radioparadise.com/dance-128.mp3",
-  lofi:      "https://listen.lol/lofi.mp3",
-  synthwave: "https://nightride.stream/radio/8010/radio.mp3",
-  electro:   "https://ice2.somafm.com/deepspaceone-128-mp3"
-};
+    // 🔉 Прямые ссылки на потоки (убраны пробелы)
+    const streams = {
+      house:     "https://ice4.somafm.com/beatblender-128-mp3",
+      techno:    "https://ice4.somafm.com/groovesalad-128-aac",
+      dubstep:   "https://ice2.somafm.com/n5md-128-mp3",
+      trance:    "https://stream.radioparadise.com/trance-128.mp3",
+      dnb:       "https://stream.radioparadise.com/dance-128.mp3",
+      lofi:      "https://listen.lol/lofi.mp3",
+      synthwave: "https://nightride.stream/radio/8010/radio.mp3",
+      electro:   "https://ice2.somafm.com/deepspaceone-128-mp3"
+    };
 
-  // Названия жанров для отображения
-  const genreNames = {
-    house: 'House', techno: 'Techno', dubstep: 'Dubstep',
-    trance: 'Trance', dnb: 'D&B', lofi: 'Lo-fi',
-    synthwave: 'Synthwave', electro: 'Electro'
-  };
+    // Названия жанров для отображения
+    const genreNames = {
+      house: 'House', techno: 'Techno', dubstep: 'Dubstep',
+      trance: 'Trance', dnb: 'D&B', lofi: 'Lo-fi',
+      synthwave: 'Synthwave', electro: 'Electro'
+    };
 
-  // Получаем последний выбранный жанр из localStorage или устанавливаем по умолчанию
-  let currentGenre = localStorage.getItem('jager-genre') || 'techno';
+    // Получаем последний выбранный жанр из localStorage или устанавливаем по умолчанию
+    let currentGenre = localStorage.getItem('jager-genre') || 'techno';
 
-  // Функция для установки активной кнопки
-  function setActiveGenre(genre) {
+    // Функция для установки активной кнопки
+    function setActiveGenre(genre) {
+      genres.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.genre === genre);
+      });
+      // Обновляем статус
+      status.textContent = `Выбран: ${genreNames[genre] || genre}`;
+    }
+
+    // Переключение жанра
     genres.forEach(btn => {
-      if (btn.dataset.genre === genre) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
+      btn.addEventListener('click', () => {
+        const selectedGenre = btn.dataset.genre;
+        if (selectedGenre !== currentGenre) {
+          currentGenre = selectedGenre;
+          localStorage.setItem('jager-genre', currentGenre);
+          setActiveGenre(currentGenre);
+          
+          // Если радио играет, останавливаем и готовим к новому запуску
+          if (!audio.paused) {
+            audio.pause();
+            audio.src = ''; // Очищаем источник
+            playBtn.disabled = false;
+            stopBtn.disabled = true;
+          }
+        }
+      });
     });
-    // Обновляем статус
-    status.textContent = `Выбран: ${genreNames[genre] || genre}`;
-  }
 
-  // Переключение жанра
-  genres.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const selectedGenre = btn.dataset.genre;
-      if (selectedGenre !== currentGenre) {
-        currentGenre = selectedGenre;
-        localStorage.setItem('jager-genre', currentGenre);
-        setActiveGenre(currentGenre);
-        
-        // Если радио играет, останавливаем и готовим к новому запуску
-        if (!audio.paused) {
-          audio.pause();
+    // Воспроизведение
+    playBtn.addEventListener('click', () => {
+      const streamUrl = streams[currentGenre];
+      
+      // Полностью очищаем предыдущий источник
+      audio.src = '';
+      audio.src = streamUrl;
+      
+      audio.play()
+        .then(() => {
+          status.textContent = `🔊 Играет: ${genreNames[currentGenre] || currentGenre}`;
+          nowPlaying.textContent = `🎧 ${genreNames[currentGenre] || currentGenre}`;
+          playBtn.disabled = true;
+          stopBtn.disabled = false;
+        })
+        .catch(err => {
+          console.error('Ошибка воспроизведения:', err);
+          status.textContent = `❌ Ошибка: ${err.message || 'Не удалось запустить'}`;
           playBtn.disabled = false;
           stopBtn.disabled = true;
-        }
-      }
+        });
     });
-  });
 
-  // Воспроизведение
-  playBtn.addEventListener('click', () => {
-    const streamUrl = streams[currentGenre];
-    
-    // Полностью очищаем предыдущий источник
-    audio.src = '';
-    audio.src = streamUrl;
-    
-    audio.play()
-      .then(() => {
-        status.textContent = `🔊 Играет: ${genreNames[currentGenre] || currentGenre}`;
-        playBtn.disabled = true;
-        stopBtn.disabled = false;
-        // Обновляем информацию о текущем треке, если есть элемент
-        if (nowPlaying) {
-          nowPlaying.textContent = `🎧 ${genreNames[currentGenre] || currentGenre}`;
-        }
-      })
-      .catch(err => {
-        console.error('Ошибка воспроизведения:', err);
-        status.textContent = `❌ Ошибка: ${err.message || 'Не удалось запустить'}`;
-        playBtn.disabled = false;
-        stopBtn.disabled = true;
-      });
-  });
-
-  // Остановка
-  stopBtn.addEventListener('click', () => {
-    audio.pause();
-    audio.src = ''; // Очищаем источник при остановке
-    status.textContent = '⏸ Остановлено';
-    playBtn.disabled = false;
-    stopBtn.disabled = true;
-    if (nowPlaying) {
+    // Остановка
+    stopBtn.addEventListener('click', () => {
+      audio.pause();
+      audio.src = ''; // Очищаем источник при остановке
+      status.textContent = '⏸ Остановлено';
       nowPlaying.textContent = '🎵 Готово к запуску';
-    }
-  });
+      playBtn.disabled = false;
+      stopBtn.disabled = true;
+    });
 
-  // Инициализация при загрузке страницы
-  document.addEventListener('DOMContentLoaded', () => {
-    setActiveGenre(currentGenre);
-    playBtn.disabled = false;
-    stopBtn.disabled = true;
-    if (nowPlaying) {
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', () => {
+      setActiveGenre(currentGenre);
+      playBtn.disabled = false;
+      stopBtn.disabled = true;
       nowPlaying.textContent = `🎧 Готов к ${genreNames[currentGenre] || currentGenre}`;
-    }
-  });
-</script>
+    });
+  </script>
 </body>
 </html>
