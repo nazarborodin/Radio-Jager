@@ -153,15 +153,17 @@
 
   <audio id="radioPlayer"></audio>
 
-  <script>
-    const genres = document.querySelectorAll('.genre-btn');
-    const playBtn = document.getElementById('playBtn');
-    const stopBtn = document.getElementById('stopBtn');
-    const status = document.getElementById('status');
-    const nowPlaying = document.getElementById('nowPlaying');
-    const audio = document.getElementById('radioPlayer');
+<script>
+  // Элементы DOM
+  const genres = document.querySelectorAll('.genre-btn');
+  const playBtn = document.getElementById('playBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const status = document.getElementById('status');
+  const nowPlaying = document.getElementById('nowPlaying'); // Если у вас есть этот элемент
+  const audio = document.getElementById('radioPlayer');
 
-const streams = {
+  // 🔉 Прямые ссылки на потоки
+  const streams = {
   house:     "https://ice4.somafm.com/beatblender-128-mp3",
   techno:    "https://ice4.somafm.com/groovesalad-128-aac",
   dubstep:   "https://ice2.somafm.com/n5md-128-mp3",
@@ -172,53 +174,95 @@ const streams = {
   electro:   "https://ice2.somafm.com/deepspaceone-128-mp3"
 };
 
-    let currentGenre = localStorage.getItem('jager-genre') || 'house';
+  // Названия жанров для отображения
+  const genreNames = {
+    house: 'House', techno: 'Techno', dubstep: 'Dubstep',
+    trance: 'Trance', dnb: 'D&B', lofi: 'Lo-fi',
+    synthwave: 'Synthwave', electro: 'Electro'
+  };
 
-    // Установка активного жанра
-    function setActive() {
-      genres.forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.genre === currentGenre);
-      });
-      status.textContent = 'Готово к запуску';
-    }
-    setActive();
+  // Получаем последний выбранный жанр из localStorage или устанавливаем по умолчанию
+  let currentGenre = localStorage.getItem('jager-genre') || 'techno';
 
-    // Переключение жанра
+  // Функция для установки активной кнопки
+  function setActiveGenre(genre) {
     genres.forEach(btn => {
-      btn.addEventListener('click', () => {
-        currentGenre = btn.dataset.genre;
+      if (btn.dataset.genre === genre) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+    // Обновляем статус
+    status.textContent = `Выбран: ${genreNames[genre] || genre}`;
+  }
+
+  // Переключение жанра
+  genres.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const selectedGenre = btn.dataset.genre;
+      if (selectedGenre !== currentGenre) {
+        currentGenre = selectedGenre;
         localStorage.setItem('jager-genre', currentGenre);
-        setActive();
-        nowPlaying.textContent = '🎵 Ожидание...';
-        audio.pause();
+        setActiveGenre(currentGenre);
+        
+        // Если радио играет, останавливаем и готовим к новому запуску
+        if (!audio.paused) {
+          audio.pause();
+          playBtn.disabled = false;
+          stopBtn.disabled = true;
+        }
+      }
+    });
+  });
+
+  // Воспроизведение
+  playBtn.addEventListener('click', () => {
+    const streamUrl = streams[currentGenre];
+    
+    // Полностью очищаем предыдущий источник
+    audio.src = '';
+    audio.src = streamUrl;
+    
+    audio.play()
+      .then(() => {
+        status.textContent = `🔊 Играет: ${genreNames[currentGenre] || currentGenre}`;
+        playBtn.disabled = true;
+        stopBtn.disabled = false;
+        // Обновляем информацию о текущем треке, если есть элемент
+        if (nowPlaying) {
+          nowPlaying.textContent = `🎧 ${genreNames[currentGenre] || currentGenre}`;
+        }
+      })
+      .catch(err => {
+        console.error('Ошибка воспроизведения:', err);
+        status.textContent = `❌ Ошибка: ${err.message || 'Не удалось запустить'}`;
         playBtn.disabled = false;
         stopBtn.disabled = true;
       });
-    });
+  });
 
-    // Воспроизведение
-    playBtn.addEventListener('click', () => {
-      const streamUrl = streams[currentGenre];
-      audio.src = streamUrl;
-      audio.play()
-        .then(() => {
-          status.textContent = '🔊 Трансляция запущена';
-          nowPlaying.textContent = `🎧 Воспроизводится: ${currentGenre.toUpperCase()}`;
-          playBtn.disabled = true;
-          stopBtn.disabled = false;
-        })
-        .catch(err => {
-          status.textContent = '❌ Ошибка: ' + err.message;
-          nowPlaying.textContent = '⚠️ Не удалось запустить';
-        });
-    });
+  // Остановка
+  stopBtn.addEventListener('click', () => {
+    audio.pause();
+    audio.src = ''; // Очищаем источник при остановке
+    status.textContent = '⏸ Остановлено';
+    playBtn.disabled = false;
+    stopBtn.disabled = true;
+    if (nowPlaying) {
+      nowPlaying.textContent = '🎵 Готово к запуску';
+    }
+  });
 
-    stopBtn.addEventListener('click', () => {
-      audio.pause();
-      status.textContent = '⏸ Остановлено';
-      playBtn.disabled = false;
-      stopBtn.disabled = true;
-    });
-  </script>
+  // Инициализация при загрузке страницы
+  document.addEventListener('DOMContentLoaded', () => {
+    setActiveGenre(currentGenre);
+    playBtn.disabled = false;
+    stopBtn.disabled = true;
+    if (nowPlaying) {
+      nowPlaying.textContent = `🎧 Готов к ${genreNames[currentGenre] || currentGenre}`;
+    }
+  });
+</script>
 </body>
 </html>
