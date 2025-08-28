@@ -39,7 +39,6 @@
       --accent: #fff;
       --border: #000;
       --chart-bg: #000;
-      --chart-line: #00f;
       --candle-green: #0f0;
       --candle-red: #f00;
     }
@@ -70,17 +69,16 @@
       box-sizing: border-box;
     }
 
-    /* Левый и правый графики */
+    /* Графики слева и справа */
     .chart {
       position: relative;
-      width: 300px;
-      height: 600px;
-      background: url('https://i.imgur.com/7X5ZrVQ.jpg') no-repeat center center;
-      background-size: cover;
-      border: 5px solid #000;
+      width: 280px;
+      height: 500px;
+      background: #000;
+      border: 8px solid #333;
       border-radius: 15px;
       overflow: hidden;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
     }
 
     .chart-candles {
@@ -97,18 +95,19 @@
 
     .candle {
       width: 6px;
+      background: #0f0;
+      opacity: 0.8;
+      border-radius: 2px;
       transform-origin: bottom;
       transition: height 0.1s ease-out;
     }
 
-    .candle.green {
-      background: var(--candle-green);
-      opacity: 0.8;
+    .candle.red {
+      background: #f00;
     }
 
-    .candle.red {
-      background: var(--candle-red);
-      opacity: 0.8;
+    .candle.green {
+      background: #0f0;
     }
 
     /* Центральная панель */
@@ -194,14 +193,14 @@
 </head>
 <body>
   <div class="container">
-    <!-- Левый график -->
+    <!-- Левый эквалайзер -->
     <div class="chart" id="chart-left">
       <div class="chart-candles" id="candles-left"></div>
     </div>
 
     <!-- Центральная панель -->
     <div class="center-panel">
-      <img src="logo.png" alt="JAGER Radio" class="brand logo" style="height: 80px;">
+      <img src="logo.png" alt="JAGER Radio" class="brand logo">
       
       <div class="genres" id="genres">
         <button class="genre-btn" data-genre="house">🏠 House</button>
@@ -223,7 +222,7 @@
       <div class="status" id="status">Выберите стиль</div>
     </div>
 
-    <!-- Правый график -->
+    <!-- Правый эквалайзер -->
     <div class="chart" id="chart-right">
       <div class="chart-candles" id="candles-right"></div>
     </div>
@@ -240,7 +239,7 @@
     const nowPlaying = document.getElementById('nowPlaying');
     const audio = document.getElementById('radioPlayer');
 
-    // Ссылки на потоки
+    // Ссылки на потоки (используем MP3 вместо AAC)
     const streams = {
       house:     "https://ice4.somafm.com/beatblender-128-mp3",
       techno:    "https://ice4.somafm.com/groovesalad-128-mp3",
@@ -259,6 +258,7 @@
     };
 
     let currentGenre = localStorage.getItem('jager-genre') || 'techno';
+    let analyser = null; // Глобальный анализатор
 
     function setActiveGenre(genre) {
       genres.forEach(btn => {
@@ -267,7 +267,7 @@
       status.textContent = `Выбран: ${genreNames[genre]}`;
     }
 
-    // Обработка жанров
+    // Обработка выбора жанра
     genres.forEach(btn => {
       btn.addEventListener('click', () => {
         const selectedGenre = btn.dataset.genre;
@@ -289,8 +289,10 @@
     // Воспроизведение
     playBtn.addEventListener('click', () => {
       const streamUrl = streams[currentGenre];
+
+      // Очищаем предыдущий источник
       audio.src = streamUrl;
-      
+
       audio.play()
         .then(() => {
           status.textContent = `🔊 Играет: ${genreNames[currentGenre]}`;
@@ -300,8 +302,8 @@
           startCandles();
         })
         .catch(err => {
-          console.error('Ошибка:', err);
-          status.textContent = `❌ Ошибка: ${err.message}`;
+          console.error('Ошибка воспроизведения:', err);
+          status.textContent = `❌ Ошибка: ${err.message || 'Не удалось запустить'}`;
           playBtn.disabled = false;
           stopBtn.disabled = true;
         });
@@ -311,11 +313,14 @@
     stopBtn.addEventListener('click', () => {
       audio.pause();
       audio.src = '';
+      if (analyser) {
+        analyser.disconnect();
+        analyser = null;
+      }
       status.textContent = '⏸ Остановлено';
       nowPlaying.textContent = '🎵 Готово к запуску';
       playBtn.disabled = false;
       stopBtn.disabled = true;
-      stopCandles();
     });
 
     // Инициализация
@@ -329,7 +334,7 @@
     // --- Эквалайзеры в виде свечей ---
     const candlesLeft = document.getElementById('candles-left');
     const candlesRight = document.getElementById('candles-right');
-    const candleCount = 20;
+    const candleCount = 18;
 
     function createCandles(container) {
       for (let i = 0; i < candleCount; i++) {
@@ -343,13 +348,19 @@
     createCandles(candlesLeft);
     createCandles(candlesRight);
 
-    let analyser, dataArray;
+    let dataArray;
     let animationId;
 
     function startCandles() {
       if (!audio.src) return;
 
-      const ctx = audio.getContext ? audio.getContext() : new (window.AudioContext || window.webkitAudioContext)();
+      // Удаляем старый анализатор
+      if (analyser) {
+        analyser.disconnect();
+        analyser = null;
+      }
+
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
       const source = ctx.createMediaElementSource(audio);
       analyser = ctx.createAnalyser();
       analyser.fftSize = 256;
@@ -380,7 +391,7 @@
         candlesL[i].style.height = `${height}%`;
         candlesR[i].style.height = `${height}%`;
 
-        // Красные и зелёные свечи
+        // Чередование цветов (свечи)
         if (i % 2 === 0) {
           candlesL[i].className = 'candle red';
           candlesR[i].className = 'candle red';
