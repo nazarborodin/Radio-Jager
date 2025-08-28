@@ -228,7 +228,7 @@
     </div>
   </div>
 
-  <audio id="radioPlayer"></audio>
+  <audio id="radioPlayer" preload="auto"></audio>
 
   <script>
     // DOM
@@ -239,7 +239,7 @@
     const nowPlaying = document.getElementById('nowPlaying');
     const audio = document.getElementById('radioPlayer');
 
-    // Ссылки на потоки (используем MP3 вместо AAC)
+    // Рабочие потоки (MP3)
     const streams = {
       house:     "https://ice4.somafm.com/beatblender-128-mp3",
       techno:    "https://ice4.somafm.com/groovesalad-128-mp3",
@@ -258,7 +258,8 @@
     };
 
     let currentGenre = localStorage.getItem('jager-genre') || 'techno';
-    let analyser = null; // Глобальный анализатор
+    let analyser = null;
+    let audioContext = null;
 
     function setActiveGenre(genre) {
       genres.forEach(btn => {
@@ -267,7 +268,7 @@
       status.textContent = `Выбран: ${genreNames[genre]}`;
     }
 
-    // Обработка выбора жанра
+    // Выбор жанра
     genres.forEach(btn => {
       btn.addEventListener('click', () => {
         const selectedGenre = btn.dataset.genre;
@@ -287,26 +288,29 @@
     });
 
     // Воспроизведение
-    playBtn.addEventListener('click', () => {
+    playBtn.addEventListener('click', async () => {
       const streamUrl = streams[currentGenre];
+      
+      // Создаём AudioContext только при клике (для автовоспроизведения)
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
 
-      // Очищаем предыдущий источник
       audio.src = streamUrl;
-
-      audio.play()
-        .then(() => {
-          status.textContent = `🔊 Играет: ${genreNames[currentGenre]}`;
-          nowPlaying.textContent = `🎧 ${genreNames[currentGenre]}`;
-          playBtn.disabled = true;
-          stopBtn.disabled = false;
-          startCandles();
-        })
-        .catch(err => {
-          console.error('Ошибка воспроизведения:', err);
-          status.textContent = `❌ Ошибка: ${err.message || 'Не удалось запустить'}`;
-          playBtn.disabled = false;
-          stopBtn.disabled = true;
-        });
+      
+      try {
+        await audio.play();
+        status.textContent = `🔊 Играет: ${genreNames[currentGenre]}`;
+        nowPlaying.textContent = `🎧 ${genreNames[currentGenre]}`;
+        playBtn.disabled = true;
+        stopBtn.disabled = false;
+        startCandles();
+      } catch (err) {
+        console.error('Ошибка воспроизведения:', err);
+        status.textContent = `❌ Ошибка: ${err.message}`;
+        playBtn.disabled = false;
+        stopBtn.disabled = true;
+      }
     });
 
     // Остановка
@@ -316,6 +320,10 @@
       if (analyser) {
         analyser.disconnect();
         analyser = null;
+      }
+      if (audioContext) {
+        audioContext.close();
+        audioContext = null;
       }
       status.textContent = '⏸ Остановлено';
       nowPlaying.textContent = '🎵 Готово к запуску';
@@ -352,7 +360,7 @@
     let animationId;
 
     function startCandles() {
-      if (!audio.src) return;
+      if (!audio.src || !audioContext) return;
 
       // Удаляем старый анализатор
       if (analyser) {
@@ -360,20 +368,14 @@
         analyser = null;
       }
 
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const source = ctx.createMediaElementSource(audio);
-      analyser = ctx.createAnalyser();
+      const source = audioContext.createMediaElementSource(audio);
+      analyser = audioContext.createAnalyser();
       analyser.fftSize = 256;
       source.connect(analyser);
-      analyser.connect(ctx.destination);
+      analyser.connect(audioContext.destination);
 
       dataArray = new Uint8Array(analyser.frequencyBinCount);
       updateCandles();
-    }
-
-    function stopCandles() {
-      if (animationId) cancelAnimationFrame(animationId);
-      animationId = null;
     }
 
     function updateCandles() {
@@ -391,7 +393,6 @@
         candlesL[i].style.height = `${height}%`;
         candlesR[i].style.height = `${height}%`;
 
-        // Чередование цветов (свечи)
         if (i % 2 === 0) {
           candlesL[i].className = 'candle red';
           candlesR[i].className = 'candle red';
