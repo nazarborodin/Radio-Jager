@@ -5,26 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>JAGER Radio</title>
 
-  <!-- Favicon -->
-  <link id="favicon" rel="icon" href="favicon.png" sizes="192x192">
+  <!-- Favicon -->                                                                                                                                                                                                                    
+  <link rel="icon" href="favicon.png" sizes="192x192">
   <link rel="apple-touch-icon" href="favicon.png">
 
   <!-- Описание сайта -->
   <meta name="description" content="JAGER Radio — 8 стилей электронной музыки без остановки: House, Techno, Dubstep, Trance, D&B, Lo-fi, Synthwave, Electro">
 
-  <!-- Open Graph -->
+  <!-- Open Graph / Превью в Telegram, WhatsApp, VK -->
   <meta property="og:title" content="JAGER Radio">
   <meta property="og:description" content="🎧 Слушай 8 стилей электронной музыки онлайн — House, Techno, Dubstep, Trance и другие">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://nazarborodin.github.io/Radio-Jager">
-  <meta property="og:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg">
+  <meta property="og:url" content="https://nazarborodin.github.io/Radio-Jager  ">
+  <meta property="og:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg  ">
 
   <!-- Twitter Card -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://nazarborodin.github.io/Radio-Jager">
+  <meta property="twitter:url" content="https://nazarborodin.github.io/Radio-Jager  ">
   <meta property="twitter:title" content="JAGER Radio">
   <meta property="twitter:description" content="🎧 Электронная музыка 24/7 — выбери свой стиль">
-  <meta property="twitter:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg">
+  <meta property="twitter:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg  ">
 
   <!-- PWA -->
   <meta name="theme-color" content="#FFD700">
@@ -38,8 +38,6 @@
       --text: #000;
       --accent: #fff;
       --border: #000;
-      --frame-bg: #000;
-      --frame-text: #FFD700;
     }
 
     body {
@@ -54,109 +52,16 @@
       min-height: 100vh;
       color: var(--text);
       text-align: center;
-      overflow: hidden;
     }
 
     .container {
-      position: relative;
-      width: 90%;
-      max-width: 1200px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 30px;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-
-    .frame {
-      position: relative;
-      width: 200px;
-      height: 600px;
-      background: var(--frame-bg);
-      border: 15px solid #333;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 10px;
-      box-sizing: border-box;
-    }
-
-    .frame-header {
-      color: var(--frame-text);
-      font-size: 1.6em;
-      font-weight: 800;
-      text-align: center;
-      letter-spacing: 1px;
-      text-shadow: 0 0 5px #000;
-    }
-
-    .frame-body {
-      flex: 1;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .equalizer {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: space-around;
-      align-items: flex-end;
-      bottom: 0;
-    }
-
-    .bar {
-      width: 4px;
-      background: #0f0;
-      opacity: 0.8;
-      border-radius: 5px;
-      transform-origin: bottom;
-      transition: height 0.1s ease-out;
-    }
-
-    .bar.red {
-      background: #f00;
-    }
-
-    .frame-footer {
-      color: var(--frame-text);
-      font-size: 0.7em;
-      text-align: center;
-      padding: 5px;
-      margin-top: 5px;
-      text-shadow: 0 0 3px #000;
-    }
-
-    .frame.right {
-      transform: scaleX(-1);
-    }
-
-    .frame.right .frame-header,
-    .frame.right .frame-footer {
-      transform: scaleX(-1);
-    }
-
-    .frame.right .equalizer {
-      transform: scaleX(-1);
-    }
-
-    /* Центральный блок */
-    .center-panel {
       background: rgba(255, 255, 255, 0.95);
-      padding: 30px;
+      padding: 50px;
       border-radius: 25px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      width: 500px;
-      max-width: 80%;
+      max-width: 800px;
+      width: 90%;
       border: 2px solid var(--border);
-      text-align: center;
     }
 
     .brand {
@@ -164,7 +69,7 @@
       font-weight: 900;
       color: var(--text);
       letter-spacing: 3px;
-      margin: 10px 0;
+      margin: 5px 0 15px;
     }
 
     .genres {
@@ -177,32 +82,22 @@
     .genre-btn {
       background: var(--accent);
       color: #000;
-      border: 3px solid #000;
-      padding: 12px 10px;
+      border: 2px solid #000;
+      padding: 15px 10px;
       border-radius: 20px;
       cursor: pointer;
       font-size: 1.1em;
       font-weight: 700;
       box-shadow: 0 4px 0 #000;
-      transition: all 0.2s ease;
-      position: relative;
-      overflow: hidden;
     }
 
     .genre-btn:hover {
       transform: translateY(-3px);
-      box-shadow: 0 6px 0 #000;
     }
 
     .genre-btn.active {
       background: #000;
       color: #FFD700;
-      box-shadow: 0 4px 0 #FFD700;
-    }
-
-    .genre-btn:active {
-      transform: scale(0.98);
-      box-shadow: 0 2px 0 #000;
     }
 
     .play-controls button {
@@ -216,18 +111,6 @@
       margin: 15px 10px;
       font-weight: 800;
       box-shadow: 0 6px 0 #000;
-      transition: all 0.2s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .play-controls button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 0 #000;
-    }
-
-    .play-controls button:active {
-      transform: scale(0.98);
     }
 
     .now-playing {
@@ -242,99 +125,75 @@
       min-height: 24px;
       font-weight: 700;
     }
-
-    .logo {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 20px;
-    }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Левая рамка - BNB -->
-    <div class="frame left" id="frame-left">
-      <div class="frame-header">BNB $N/A</div>
-      <div class="frame-body">
-        <div class="equalizer" id="eq-left"></div>
-      </div>
-      <div class="frame-footer">0xb8c77482e45f1f44de1745f52c74426c631bdd52</div>
+    <img src="logo.png" alt="JAGER Radio" class="brand" style="height: 80px;">
+
+    <div class="genres" id="genres">
+      <button class="genre-btn" data-genre="house">🏠 House</button>
+      <button class="genre-btn" data-genre="techno">🏭 Techno</button>
+      <button class="genre-btn" data-genre="dubstep">🔊 Dubstep</button>
+      <button class="genre-btn" data-genre="trance">🌀 Trance</button>
+      <button class="genre-btn" data-genre="dnb">🥁 D&B</button>
+      <button class="genre-btn" data-genre="lofi">🎧 Lo-fi</button>
+      <button class="genre-btn" data-genre="synthwave">📼 Synthwave</button>
+      <button class="genre-btn" data-genre="electro">⚡ Electro</button>
     </div>
 
-    <!-- Центральная панель -->
-    <div class="center-panel">
-      <img src="logo.png" alt="JAGER Radio" class="brand logo">
-      
-      <div class="genres" id="genres">
-        <button class="genre-btn" data-genre="house">🏠 House</button>
-        <button class="genre-btn" data-genre="techno">🏭 Techno</button>
-        <button class="genre-btn" data-genre="dubstep">🔊 Dubstep</button>
-        <button class="genre-btn" data-genre="trance">🌀 Trance</button>
-        <button class="genre-btn" data-genre="dnb">🥁 D&B</button>
-        <button class="genre-btn" data-genre="lofi">🎧 Lo-fi</button>
-        <button class="genre-btn" data-genre="synthwave">📼 Synthwave</button>
-        <button class="genre-btn" data-genre="electro">⚡ Electro</button>
-      </div>
+    <div class="now-playing" id="nowPlaying">🎵 Трек не найден</div>
 
-      <div class="now-playing" id="nowPlaying">🎵 Трек не найден</div>
-
-      <div class="play-controls">
-        <button id="playBtn">▶ Запустить</button>
-        <button id="stopBtn" disabled>⏹ Стоп</button>
-      </div>
-      <div class="status" id="status">Выберите стиль</div>
+    <div class="play-controls">
+      <button id="playBtn">▶ Запустить</button>
+      <button id="stopBtn" disabled>⏹ Стоп</button>
     </div>
-
-    <!-- Правая рамка - JAGER -->
-    <div class="frame right" id="frame-right">
-      <div class="frame-header">JAGER $N/A</div>
-      <div class="frame-body">
-        <div class="equalizer" id="eq-right"></div>
-      </div>
-      <div class="frame-footer">0x74836cc0e821a6be18e407e6388e430b689c66e9</div>
-    </div>
+    <div class="status" id="status">Выберите стиль</div>
   </div>
 
   <audio id="radioPlayer"></audio>
 
   <script>
-    // DOM
+    // Элементы DOM
     const genres = document.querySelectorAll('.genre-btn');
     const playBtn = document.getElementById('playBtn');
     const stopBtn = document.getElementById('stopBtn');
     const status = document.getElementById('status');
     const nowPlaying = document.getElementById('nowPlaying');
     const audio = document.getElementById('radioPlayer');
-    const favicon = document.getElementById('favicon');
 
-    // Ссылки на потоки
+    // 🔉 Прямые ссылки на потоки (убраны пробелы)
     const streams = {
-      house:     "https://ice4.somafm.com/beatblender-128-mp3",
-      techno:    "https://ice4.somafm.com/groovesalad-128-aac",
-      dubstep:   "https://ice2.somafm.com/n5md-128-mp3",
-      trance:    "https://ice2.somafm.com/live-128-mp3",
-      dnb:       "https://ice2.somafm.com/folkfwd-128-mp3",
-      lofi:      "https://ice4.somafm.com/suburbsofgoa-128-mp3",
-      synthwave: "https://ice4.somafm.com/thetrip-128-mp3",
-      electro:   "https://ice2.somafm.com/deepspaceone-128-mp3"
+      house:     "https://ice4.somafm.com/beatblender-128-mp3  ",
+      techno:    "https://ice4.somafm.com/groovesalad-128-aac  ",
+      dubstep:   "https://ice2.somafm.com/n5md-128-mp3  ",
+      trance:    "https://ice2.somafm.com/live-128-mp3  ",
+      dnb:       "https://ice2.somafm.com/folkfwd-128-mp3  ",
+      lofi:      "https://ice4.somafm.com/suburbsofgoa-128-mp3  ",
+      synthwave: "https://ice4.somafm.com/thetrip-128-mp3  ",
+      electro:   "https://ice2.somafm.com/deepspaceone-128-mp3  "
     };
 
+    // Названия жанров для отображения
     const genreNames = {
       house: 'House', techno: 'Techno', dubstep: 'Dubstep',
       trance: 'Trance', dnb: 'D&B', lofi: 'Lo-fi',
       synthwave: 'Synthwave', electro: 'Electro'
     };
 
+    // Получаем последний выбранный жанр из localStorage или устанавливаем по умолчанию
     let currentGenre = localStorage.getItem('jager-genre') || 'techno';
 
+    // Функция для установки активной кнопки
     function setActiveGenre(genre) {
       genres.forEach(btn => {
         btn.classList.toggle('active', btn.dataset.genre === genre);
       });
-      status.textContent = `Выбран: ${genreNames[genre]}`;
+      // Обновляем статус
+      status.textContent = `Выбран: ${genreNames[genre] || genre}`;
     }
 
-    // Обработка жанров
+    // Переключение жанра
     genres.forEach(btn => {
       btn.addEventListener('click', () => {
         const selectedGenre = btn.dataset.genre;
@@ -343,9 +202,10 @@
           localStorage.setItem('jager-genre', currentGenre);
           setActiveGenre(currentGenre);
           
+          // Если радио играет, останавливаем и готовим к новому запуску
           if (!audio.paused) {
             audio.pause();
-            audio.src = '';
+            audio.src = ''; // Очищаем источник
             playBtn.disabled = false;
             stopBtn.disabled = true;
           }
@@ -356,27 +216,21 @@
     // Воспроизведение
     playBtn.addEventListener('click', () => {
       const streamUrl = streams[currentGenre];
-
-      // Очистка предыдущего контекста
-      if (analyser) {
-        analyser.disconnect();
-        analyser = null;
-      }
-
+      
+      // Полностью очищаем предыдущий источник
+      audio.src = '';
       audio.src = streamUrl;
-
+      
       audio.play()
         .then(() => {
-          status.textContent = `🔊 Играет: ${genreNames[currentGenre]}`;
-          nowPlaying.textContent = `🎧 ${genreNames[currentGenre]}`;
+          status.textContent = `🔊 Играет: ${genreNames[currentGenre] || currentGenre}`;
+          nowPlaying.textContent = `🎧 ${genreNames[currentGenre] || currentGenre}`;
           playBtn.disabled = true;
           stopBtn.disabled = false;
-          startEqualizers(); // Запускаем эквалайзер
-          updateFavicon();
         })
         .catch(err => {
-          console.error('Ошибка:', err);
-          status.textContent = `❌ Ошибка: ${err.message}`;
+          console.error('Ошибка воспроизведения:', err);
+          status.textContent = `❌ Ошибка: ${err.message || 'Не удалось запустить'}`;
           playBtn.disabled = false;
           stopBtn.disabled = true;
         });
@@ -385,191 +239,20 @@
     // Остановка
     stopBtn.addEventListener('click', () => {
       audio.pause();
-      audio.src = ''; // Очищаем источник
-      if (analyser) {
-        analyser.disconnect();
-        analyser = null;
-      }
+      audio.src = ''; // Очищаем источник при остановке
       status.textContent = '⏸ Остановлено';
       nowPlaying.textContent = '🎵 Готово к запуску';
       playBtn.disabled = false;
       stopBtn.disabled = true;
-      updateFavicon();
     });
 
-    // Инициализация
+    // Инициализация при загрузке страницы
     document.addEventListener('DOMContentLoaded', () => {
       setActiveGenre(currentGenre);
       playBtn.disabled = false;
       stopBtn.disabled = true;
-      nowPlaying.textContent = `🎧 Готов к ${genreNames[currentGenre]}`;
-      updateFavicon();
+      nowPlaying.textContent = `🎧 Готов к ${genreNames[currentGenre] || currentGenre}`;
     });
-
-    // --- Эквалайзеры ---
-    const eqLeft = document.getElementById('eq-left');
-    const eqRight = document.getElementById('eq-right');
-    const barCount = 15;
-
-    function createBars(container) {
-      for (let i = 0; i < barCount; i++) {
-        const bar = document.createElement('div');
-        bar.className = 'bar';
-        bar.style.height = '0px';
-        container.appendChild(bar);
-      }
-    }
-
-    createBars(eqLeft);
-    createBars(eqRight);
-
-    let analyser, dataArray;
-    let animationId;
-
-    function startEqualizers() {
-      if (!audio.src) return;
-
-      const ctx = audio.getContext ? audio.getContext() : new (window.AudioContext || window.webkitAudioContext)();
-      const source = ctx.createMediaElementSource(audio);
-      analyser = ctx.createAnalyser();
-      analyser.fftSize = 256;
-      source.connect(analyser);
-      analyser.connect(ctx.destination);
-
-      dataArray = new Uint8Array(analyser.frequencyBinCount);
-      updateBars();
-    }
-
-    function stopEqualizers() {
-      if (animationId) cancelAnimationFrame(animationId);
-      animationId = null;
-    }
-
-    function updateBars() {
-      if (!analyser) return;
-
-      analyser.getByteFrequencyData(dataArray);
-
-      const barsLeft = eqLeft.querySelectorAll('.bar');
-      const barsRight = eqRight.querySelectorAll('.bar');
-
-      for (let i = 0; i < barsLeft.length; i++) {
-        const val = dataArray[i * 2] / 255;
-        const height = val * 100 + 5;
-
-        barsLeft[i].style.height = `${height}%`;
-        barsRight[i].style.height = `${height}%`;
-
-        if (i % 2 === 0) {
-          barsLeft[i].className = 'bar red';
-          barsRight[i].className = 'bar red';
-        } else {
-          barsLeft[i].className = 'bar';
-          barsRight[i].className = 'bar';
-        }
-      }
-
-      animationId = requestAnimationFrame(updateBars);
-    }
-
-    // --- Динамический Favicon ---
-    function updateFavicon() {
-      const canvas = document.createElement('canvas');
-      canvas.width = 32;
-      canvas.height = 32;
-      const ctx = canvas.getContext('2d');
-
-      ctx.fillStyle = '#FFD700';
-      ctx.fillRect(0, 0, 32, 32);
-
-      ctx.fillStyle = '#000';
-      ctx.beginPath();
-      ctx.moveTo(8, 10);
-      ctx.lineTo(14, 10);
-      ctx.lineTo(18, 6);
-      ctx.lineTo(18, 26);
-      ctx.lineTo(14, 22);
-      ctx.lineTo(8, 22);
-      ctx.fill();
-
-      if (!audio.paused && audio.volume > 0) {
-        ctx.beginPath();
-        ctx.moveTo(20, 12);
-        ctx.lineTo(24, 10);
-        ctx.lineTo(28, 14);
-        ctx.lineTo(24, 18);
-        ctx.lineTo(20, 16);
-        ctx.stroke();
-      } else {
-        ctx.beginPath();
-        ctx.moveTo(22, 10);
-        ctx.lineTo(26, 14);
-        ctx.lineTo(22, 18);
-        ctx.moveTo(24, 10);
-        ctx.lineTo(28, 14);
-        ctx.lineTo(24, 18);
-        ctx.strokeStyle = '#f00';
-        ctx.stroke();
-      }
-
-      favicon.href = canvas.toDataURL('image/png');
-    }
-
-    favicon.addEventListener('click', () => {
-      if (audio.volume > 0) {
-        audio.volume = 0;
-        status.textContent = '🔇 Звук выключен';
-      } else {
-        audio.volume = 1;
-        status.textContent = '🔊 Звук включён';
-      }
-      updateFavicon();
-    });
-
-    // --- Курс JAGER через DexScreener ---
-    const JAGER_CONTRACT = '0x74836cc0e821a6be18e407e6388e430b689c66e9';
-    const BNB_CONTRACT = '0xbb4CdB9CBd36B01bD1cBaEBF26562427715A0226';
-
-    async function fetchPrice(tokenAddress) {
-      try {
-        const res = await fetch(`https://api.dexscreener.com/latest/token/${tokenAddress}`);
-        const data = await res.json();
-        if (data.price) {
-          return parseFloat(data.price).toFixed(4);
-        }
-        return 'N/A';
-      } catch (err) {
-        console.error('Ошибка получения цены:', err);
-        return 'N/A';
-      }
-    }
-
-    setInterval(async () => {
-      const bnbPrice = await fetchPrice(BNB_CONTRACT);
-      const jagerPrice = await fetchPrice(JAGER_CONTRACT);
-
-      const bnbHeader = document.querySelector('.frame.left .frame-header');
-      const jagerHeader = document.querySelector('.frame.right .frame-header');
-
-      if (bnbHeader) {
-        bnbHeader.textContent = `BNB $${bnbPrice}`;
-      }
-
-      if (jagerHeader) {
-        jagerHeader.textContent = `JAGER $${jagerPrice}`;
-      }
-    }, 30000);
-
-    setTimeout(async () => {
-      const bnbPrice = await fetchPrice(BNB_CONTRACT);
-      const jagerPrice = await fetchPrice(JAGER_CONTRACT);
-
-      const bnbHeader = document.querySelector('.frame.left .frame-header');
-      const jagerHeader = document.querySelector('.frame.right .frame-header');
-
-      if (bnbHeader) bnbHeader.textContent = `BNB $${bnbPrice}`;
-      if (jagerHeader) jagerHeader.textContent = `JAGER $${jagerPrice}`;
-    }, 1000);
   </script>
 </body>
 </html>
