@@ -40,7 +40,6 @@
       --border: #000;
       --frame-bg: #000;
       --frame-text: #FFD700;
-      --pulse: 1.1;
     }
 
     body {
@@ -70,7 +69,6 @@
       box-sizing: border-box;
     }
 
-    /* Рамки */
     .frame {
       position: relative;
       width: 200px;
@@ -85,7 +83,6 @@
       justify-content: space-between;
       padding: 10px;
       box-sizing: border-box;
-      transition: transform 0.3s ease;
     }
 
     .frame-header {
@@ -257,7 +254,7 @@
   <div class="container">
     <!-- Левая рамка - BNB -->
     <div class="frame left" id="frame-left">
-      <div class="frame-header">BNB $866.61</div>
+      <div class="frame-header">BNB $N/A</div>
       <div class="frame-body">
         <div class="equalizer" id="eq-left"></div>
       </div>
@@ -290,7 +287,7 @@
 
     <!-- Правая рамка - JAGER -->
     <div class="frame right" id="frame-right">
-      <div class="frame-header">JAGER $0.0001</div>
+      <div class="frame-header">JAGER $N/A</div>
       <div class="frame-body">
         <div class="equalizer" id="eq-right"></div>
       </div>
@@ -309,8 +306,6 @@
     const nowPlaying = document.getElementById('nowPlaying');
     const audio = document.getElementById('radioPlayer');
     const favicon = document.getElementById('favicon');
-    const frameLeft = document.getElementById('frame-left');
-    const frameRight = document.getElementById('frame-right');
 
     // Ссылки на потоки
     const streams = {
@@ -361,15 +356,22 @@
     // Воспроизведение
     playBtn.addEventListener('click', () => {
       const streamUrl = streams[currentGenre];
+
+      // Очистка предыдущего контекста
+      if (analyser) {
+        analyser.disconnect();
+        analyser = null;
+      }
+
       audio.src = streamUrl;
-      
+
       audio.play()
         .then(() => {
           status.textContent = `🔊 Играет: ${genreNames[currentGenre]}`;
           nowPlaying.textContent = `🎧 ${genreNames[currentGenre]}`;
           playBtn.disabled = true;
           stopBtn.disabled = false;
-          startEqualizers();
+          startEqualizers(); // Запускаем эквалайзер
           updateFavicon();
         })
         .catch(err => {
@@ -383,12 +385,15 @@
     // Остановка
     stopBtn.addEventListener('click', () => {
       audio.pause();
-      audio.src = '';
+      audio.src = ''; // Очищаем источник
+      if (analyser) {
+        analyser.disconnect();
+        analyser = null;
+      }
       status.textContent = '⏸ Остановлено';
       nowPlaying.textContent = '🎵 Готово к запуску';
       playBtn.disabled = false;
       stopBtn.disabled = true;
-      stopEqualizers();
       updateFavicon();
     });
 
@@ -423,16 +428,15 @@
 
     function startEqualizers() {
       if (!audio.src) return;
-      
+
       const ctx = audio.getContext ? audio.getContext() : new (window.AudioContext || window.webkitAudioContext)();
       const source = ctx.createMediaElementSource(audio);
       analyser = ctx.createAnalyser();
       analyser.fftSize = 256;
       source.connect(analyser);
       analyser.connect(ctx.destination);
-      
+
       dataArray = new Uint8Array(analyser.frequencyBinCount);
-      
       updateBars();
     }
 
@@ -443,19 +447,19 @@
 
     function updateBars() {
       if (!analyser) return;
-      
+
       analyser.getByteFrequencyData(dataArray);
-      
+
       const barsLeft = eqLeft.querySelectorAll('.bar');
       const barsRight = eqRight.querySelectorAll('.bar');
-      
+
       for (let i = 0; i < barsLeft.length; i++) {
         const val = dataArray[i * 2] / 255;
         const height = val * 100 + 5;
-        
+
         barsLeft[i].style.height = `${height}%`;
         barsRight[i].style.height = `${height}%`;
-        
+
         if (i % 2 === 0) {
           barsLeft[i].className = 'bar red';
           barsRight[i].className = 'bar red';
@@ -464,7 +468,7 @@
           barsRight[i].className = 'bar';
         }
       }
-      
+
       animationId = requestAnimationFrame(updateBars);
     }
 
