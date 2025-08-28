@@ -291,7 +291,7 @@
     playBtn.addEventListener('click', async () => {
       const streamUrl = streams[currentGenre];
       
-      // Создаём AudioContext только при клике (для автовоспроизведения)
+      // Создаём AudioContext только при клике
       if (!audioContext) {
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
       }
