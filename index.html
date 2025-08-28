@@ -5,26 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>JAGER Radio</title>
 
-  <!-- Favicon -->                                                                                                                                                                                                                    
+  <!-- Favicon -->
   <link rel="icon" href="favicon.png" sizes="192x192">
   <link rel="apple-touch-icon" href="favicon.png">
 
   <!-- Описание сайта -->
   <meta name="description" content="JAGER Radio — 8 стилей электронной музыки без остановки: House, Techno, Dubstep, Trance, D&B, Lo-fi, Synthwave, Electro">
 
-  <!-- Open Graph / Превью в Telegram, WhatsApp, VK -->
+  <!-- Open Graph -->
   <meta property="og:title" content="JAGER Radio">
   <meta property="og:description" content="🎧 Слушай 8 стилей электронной музыки онлайн — House, Techno, Dubstep, Trance и другие">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://nazarborodin.github.io/Radio-Jager  ">
-  <meta property="og:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg  ">
+  <meta property="og:url" content="https://nazarborodin.github.io/Radio-Jager">
+  <meta property="og:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg">
 
   <!-- Twitter Card -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://nazarborodin.github.io/Radio-Jager  ">
+  <meta property="twitter:url" content="https://nazarborodin.github.io/Radio-Jager">
   <meta property="twitter:title" content="JAGER Radio">
   <meta property="twitter:description" content="🎧 Электронная музыка 24/7 — выбери свой стиль">
-  <meta property="twitter:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg  ">
+  <meta property="twitter:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg">
 
   <!-- PWA -->
   <meta name="theme-color" content="#FFD700">
@@ -38,6 +38,10 @@
       --text: #000;
       --accent: #fff;
       --border: #000;
+      --chart-bg: #000;
+      --chart-line: #00f;
+      --candle-green: #0f0;
+      --candle-red: #f00;
     }
 
     body {
@@ -55,13 +59,68 @@
     }
 
     .container {
+      position: relative;
+      width: 90%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* Левый и правый графики */
+    .chart {
+      position: relative;
+      width: 300px;
+      height: 600px;
+      background: url('https://i.imgur.com/7X5ZrVQ.jpg') no-repeat center center;
+      background-size: cover;
+      border: 5px solid #000;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .chart-candles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      bottom: 0;
+    }
+
+    .candle {
+      width: 6px;
+      transform-origin: bottom;
+      transition: height 0.1s ease-out;
+    }
+
+    .candle.green {
+      background: var(--candle-green);
+      opacity: 0.8;
+    }
+
+    .candle.red {
+      background: var(--candle-red);
+      opacity: 0.8;
+    }
+
+    /* Центральная панель */
+    .center-panel {
       background: rgba(255, 255, 255, 0.95);
-      padding: 50px;
+      padding: 30px;
       border-radius: 25px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      max-width: 800px;
-      width: 90%;
+      width: 500px;
+      max-width: 80%;
       border: 2px solid var(--border);
+      text-align: center;
     }
 
     .brand {
@@ -69,7 +128,7 @@
       font-weight: 900;
       color: var(--text);
       letter-spacing: 3px;
-      margin: 5px 0 15px;
+      margin: 10px 0;
     }
 
     .genres {
@@ -83,7 +142,7 @@
       background: var(--accent);
       color: #000;
       border: 2px solid #000;
-      padding: 15px 10px;
+      padding: 12px 10px;
       border-radius: 20px;
       cursor: pointer;
       font-size: 1.1em;
@@ -125,36 +184,55 @@
       min-height: 24px;
       font-weight: 700;
     }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <img src="logo.png" alt="JAGER Radio" class="brand" style="height: 80px;">
-
-    <div class="genres" id="genres">
-      <button class="genre-btn" data-genre="house">🏠 House</button>
-      <button class="genre-btn" data-genre="techno">🏭 Techno</button>
-      <button class="genre-btn" data-genre="dubstep">🔊 Dubstep</button>
-      <button class="genre-btn" data-genre="trance">🌀 Trance</button>
-      <button class="genre-btn" data-genre="dnb">🥁 D&B</button>
-      <button class="genre-btn" data-genre="lofi">🎧 Lo-fi</button>
-      <button class="genre-btn" data-genre="synthwave">📼 Synthwave</button>
-      <button class="genre-btn" data-genre="electro">⚡ Electro</button>
+    <!-- Левый график -->
+    <div class="chart" id="chart-left">
+      <div class="chart-candles" id="candles-left"></div>
     </div>
 
-    <div class="now-playing" id="nowPlaying">🎵 Трек не найден</div>
+    <!-- Центральная панель -->
+    <div class="center-panel">
+      <img src="logo.png" alt="JAGER Radio" class="brand logo" style="height: 80px;">
+      
+      <div class="genres" id="genres">
+        <button class="genre-btn" data-genre="house">🏠 House</button>
+        <button class="genre-btn" data-genre="techno">🏭 Techno</button>
+        <button class="genre-btn" data-genre="dubstep">🔊 Dubstep</button>
+        <button class="genre-btn" data-genre="trance">🌀 Trance</button>
+        <button class="genre-btn" data-genre="dnb">🥁 D&B</button>
+        <button class="genre-btn" data-genre="lofi">🎧 Lo-fi</button>
+        <button class="genre-btn" data-genre="synthwave">📼 Synthwave</button>
+        <button class="genre-btn" data-genre="electro">⚡ Electro</button>
+      </div>
 
-    <div class="play-controls">
-      <button id="playBtn">▶ Запустить</button>
-      <button id="stopBtn" disabled>⏹ Стоп</button>
+      <div class="now-playing" id="nowPlaying">🎵 Трек не найден</div>
+
+      <div class="play-controls">
+        <button id="playBtn">▶ Запустить</button>
+        <button id="stopBtn" disabled>⏹ Стоп</button>
+      </div>
+      <div class="status" id="status">Выберите стиль</div>
     </div>
-    <div class="status" id="status">Выберите стиль</div>
+
+    <!-- Правый график -->
+    <div class="chart" id="chart-right">
+      <div class="chart-candles" id="candles-right"></div>
+    </div>
   </div>
 
   <audio id="radioPlayer"></audio>
 
   <script>
-    // Элементы DOM
+    // DOM
     const genres = document.querySelectorAll('.genre-btn');
     const playBtn = document.getElementById('playBtn');
     const stopBtn = document.getElementById('stopBtn');
@@ -162,38 +240,34 @@
     const nowPlaying = document.getElementById('nowPlaying');
     const audio = document.getElementById('radioPlayer');
 
-    // 🔉 Прямые ссылки на потоки (убраны пробелы)
+    // Ссылки на потоки
     const streams = {
-      house:     "https://ice4.somafm.com/beatblender-128-mp3  ",
-      techno:    "https://ice4.somafm.com/groovesalad-128-aac  ",
-      dubstep:   "https://ice2.somafm.com/n5md-128-mp3  ",
-      trance:    "https://ice2.somafm.com/live-128-mp3  ",
-      dnb:       "https://ice2.somafm.com/folkfwd-128-mp3  ",
-      lofi:      "https://ice4.somafm.com/suburbsofgoa-128-mp3  ",
-      synthwave: "https://ice4.somafm.com/thetrip-128-mp3  ",
-      electro:   "https://ice2.somafm.com/deepspaceone-128-mp3  "
+      house:     "https://ice4.somafm.com/beatblender-128-mp3",
+      techno:    "https://ice4.somafm.com/groovesalad-128-mp3",
+      dubstep:   "https://ice2.somafm.com/n5md-128-mp3",
+      trance:    "https://ice2.somafm.com/live-128-mp3",
+      dnb:       "https://ice2.somafm.com/folkfwd-128-mp3",
+      lofi:      "https://ice4.somafm.com/suburbsofgoa-128-mp3",
+      synthwave: "https://ice4.somafm.com/thetrip-128-mp3",
+      electro:   "https://ice2.somafm.com/deepspaceone-128-mp3"
     };
 
-    // Названия жанров для отображения
     const genreNames = {
       house: 'House', techno: 'Techno', dubstep: 'Dubstep',
       trance: 'Trance', dnb: 'D&B', lofi: 'Lo-fi',
       synthwave: 'Synthwave', electro: 'Electro'
     };
 
-    // Получаем последний выбранный жанр из localStorage или устанавливаем по умолчанию
     let currentGenre = localStorage.getItem('jager-genre') || 'techno';
 
-    // Функция для установки активной кнопки
     function setActiveGenre(genre) {
       genres.forEach(btn => {
         btn.classList.toggle('active', btn.dataset.genre === genre);
       });
-      // Обновляем статус
-      status.textContent = `Выбран: ${genreNames[genre] || genre}`;
+      status.textContent = `Выбран: ${genreNames[genre]}`;
     }
 
-    // Переключение жанра
+    // Обработка жанров
     genres.forEach(btn => {
       btn.addEventListener('click', () => {
         const selectedGenre = btn.dataset.genre;
@@ -202,10 +276,9 @@
           localStorage.setItem('jager-genre', currentGenre);
           setActiveGenre(currentGenre);
           
-          // Если радио играет, останавливаем и готовим к новому запуску
           if (!audio.paused) {
             audio.pause();
-            audio.src = ''; // Очищаем источник
+            audio.src = '';
             playBtn.disabled = false;
             stopBtn.disabled = true;
           }
@@ -216,21 +289,19 @@
     // Воспроизведение
     playBtn.addEventListener('click', () => {
       const streamUrl = streams[currentGenre];
-      
-      // Полностью очищаем предыдущий источник
-      audio.src = '';
       audio.src = streamUrl;
       
       audio.play()
         .then(() => {
-          status.textContent = `🔊 Играет: ${genreNames[currentGenre] || currentGenre}`;
-          nowPlaying.textContent = `🎧 ${genreNames[currentGenre] || currentGenre}`;
+          status.textContent = `🔊 Играет: ${genreNames[currentGenre]}`;
+          nowPlaying.textContent = `🎧 ${genreNames[currentGenre]}`;
           playBtn.disabled = true;
           stopBtn.disabled = false;
+          startCandles();
         })
         .catch(err => {
-          console.error('Ошибка воспроизведения:', err);
-          status.textContent = `❌ Ошибка: ${err.message || 'Не удалось запустить'}`;
+          console.error('Ошибка:', err);
+          status.textContent = `❌ Ошибка: ${err.message}`;
           playBtn.disabled = false;
           stopBtn.disabled = true;
         });
@@ -239,20 +310,88 @@
     // Остановка
     stopBtn.addEventListener('click', () => {
       audio.pause();
-      audio.src = ''; // Очищаем источник при остановке
+      audio.src = '';
       status.textContent = '⏸ Остановлено';
       nowPlaying.textContent = '🎵 Готово к запуску';
       playBtn.disabled = false;
       stopBtn.disabled = true;
+      stopCandles();
     });
 
-    // Инициализация при загрузке страницы
+    // Инициализация
     document.addEventListener('DOMContentLoaded', () => {
       setActiveGenre(currentGenre);
       playBtn.disabled = false;
       stopBtn.disabled = true;
-      nowPlaying.textContent = `🎧 Готов к ${genreNames[currentGenre] || currentGenre}`;
+      nowPlaying.textContent = `🎧 Готов к ${genreNames[currentGenre]}`;
     });
+
+    // --- Эквалайзеры в виде свечей ---
+    const candlesLeft = document.getElementById('candles-left');
+    const candlesRight = document.getElementById('candles-right');
+    const candleCount = 20;
+
+    function createCandles(container) {
+      for (let i = 0; i < candleCount; i++) {
+        const candle = document.createElement('div');
+        candle.className = 'candle';
+        candle.style.height = '0px';
+        container.appendChild(candle);
+      }
+    }
+
+    createCandles(candlesLeft);
+    createCandles(candlesRight);
+
+    let analyser, dataArray;
+    let animationId;
+
+    function startCandles() {
+      if (!audio.src) return;
+
+      const ctx = audio.getContext ? audio.getContext() : new (window.AudioContext || window.webkitAudioContext)();
+      const source = ctx.createMediaElementSource(audio);
+      analyser = ctx.createAnalyser();
+      analyser.fftSize = 256;
+      source.connect(analyser);
+      analyser.connect(ctx.destination);
+
+      dataArray = new Uint8Array(analyser.frequencyBinCount);
+      updateCandles();
+    }
+
+    function stopCandles() {
+      if (animationId) cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+
+    function updateCandles() {
+      if (!analyser) return;
+
+      analyser.getByteFrequencyData(dataArray);
+
+      const candlesL = candlesLeft.querySelectorAll('.candle');
+      const candlesR = candlesRight.querySelectorAll('.candle');
+
+      for (let i = 0; i < candlesL.length; i++) {
+        const val = dataArray[i * 2] / 255;
+        const height = val * 100 + 5;
+
+        candlesL[i].style.height = `${height}%`;
+        candlesR[i].style.height = `${height}%`;
+
+        // Красные и зелёные свечи
+        if (i % 2 === 0) {
+          candlesL[i].className = 'candle red';
+          candlesR[i].className = 'candle red';
+        } else {
+          candlesL[i].className = 'candle green';
+          candlesR[i].className = 'candle green';
+        }
+      }
+
+      animationId = requestAnimationFrame(updateCandles);
+    }
   </script>
 </body>
 </html>
