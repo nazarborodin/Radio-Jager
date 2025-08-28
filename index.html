@@ -38,6 +38,8 @@
       --text: #000;
       --accent: #fff;
       --border: #000;
+      --frame-bg: #000;
+      --frame-text: #FFD700;
     }
 
     body {
@@ -52,16 +54,108 @@
       min-height: 100vh;
       color: var(--text);
       text-align: center;
+      overflow: hidden;
     }
 
     .container {
+      position: relative;
+      width: 90%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* Левая рамка */
+    .frame {
+      position: relative;
+      width: 250px;
+      height: 600px;
+      background: var(--frame-bg);
+      border: 10px solid #333;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .frame-header {
+      color: var(--frame-text);
+      font-size: 1.5em;
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    .frame-body {
+      flex: 1;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .equalizer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      bottom: 0;
+    }
+
+    .bar {
+      width: 5px;
+      background: #0f0;
+      opacity: 0.8;
+      border-radius: 5px;
+      transform-origin: bottom;
+    }
+
+    .bar.red {
+      background: #f00;
+    }
+
+    .frame-footer {
+      color: var(--frame-text);
+      font-size: 0.8em;
+      text-align: center;
+      padding: 5px;
+      margin-top: 5px;
+    }
+
+    /* Правая рамка */
+    .frame.right {
+      transform: scaleX(-1);
+    }
+
+    .frame.right .frame-header,
+    .frame.right .frame-footer {
+      transform: scaleX(-1);
+    }
+
+    .frame.right .equalizer {
+      transform: scaleX(-1);
+    }
+
+    /* Центральный блок */
+    .center-panel {
       background: rgba(255, 255, 255, 0.95);
-      padding: 50px;
+      padding: 30px;
       border-radius: 25px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      max-width: 800px;
-      width: 90%;
+      width: 500px;
+      max-width: 80%;
       border: 2px solid var(--border);
+      text-align: center;
     }
 
     .brand {
@@ -69,7 +163,7 @@
       font-weight: 900;
       color: var(--text);
       letter-spacing: 3px;
-      margin: 5px 0 15px;
+      margin: 10px 0;
     }
 
     .genres {
@@ -83,7 +177,7 @@
       background: var(--accent);
       color: #000;
       border: 2px solid #000;
-      padding: 15px 10px;
+      padding: 12px 10px;
       border-radius: 20px;
       cursor: pointer;
       font-size: 1.1em;
@@ -125,36 +219,64 @@
       min-height: 24px;
       font-weight: 700;
     }
+
+    /* Стиль для логотипа */
+    .logo {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <img src="logo.png" alt="JAGER Radio" class="brand" style="height: 80px;">
-
-    <div class="genres" id="genres">
-      <button class="genre-btn" data-genre="house">🏠 House</button>
-      <button class="genre-btn" data-genre="techno">🏭 Techno</button>
-      <button class="genre-btn" data-genre="dubstep">🔊 Dubstep</button>
-      <button class="genre-btn" data-genre="trance">🌀 Trance</button>
-      <button class="genre-btn" data-genre="dnb">🥁 D&B</button>
-      <button class="genre-btn" data-genre="lofi">🎧 Lo-fi</button>
-      <button class="genre-btn" data-genre="synthwave">📼 Synthwave</button>
-      <button class="genre-btn" data-genre="electro">⚡ Electro</button>
+    <!-- Левая рамка - BNB -->
+    <div class="frame left">
+      <div class="frame-header">BNB</div>
+      <div class="frame-body">
+        <div class="equalizer" id="eq-left"></div>
+      </div>
+      <div class="frame-footer">0xb8c77482e45f1f44de1745f52c74426c631bdd52</div>
     </div>
 
-    <div class="now-playing" id="nowPlaying">🎵 Трек не найден</div>
+    <!-- Центральная панель -->
+    <div class="center-panel">
+      <img src="logo.png" alt="JAGER Radio" class="brand logo" style="height: 80px;">
+      
+      <div class="genres" id="genres">
+        <button class="genre-btn" data-genre="house">🏠 House</button>
+        <button class="genre-btn" data-genre="techno">🏭 Techno</button>
+        <button class="genre-btn" data-genre="dubstep">🔊 Dubstep</button>
+        <button class="genre-btn" data-genre="trance">🌀 Trance</button>
+        <button class="genre-btn" data-genre="dnb">🥁 D&B</button>
+        <button class="genre-btn" data-genre="lofi">🎧 Lo-fi</button>
+        <button class="genre-btn" data-genre="synthwave">📼 Synthwave</button>
+        <button class="genre-btn" data-genre="electro">⚡ Electro</button>
+      </div>
 
-    <div class="play-controls">
-      <button id="playBtn">▶ Запустить</button>
-      <button id="stopBtn" disabled>⏹ Стоп</button>
+      <div class="now-playing" id="nowPlaying">🎵 Трек не найден</div>
+
+      <div class="play-controls">
+        <button id="playBtn">▶ Запустить</button>
+        <button id="stopBtn" disabled>⏹ Стоп</button>
+      </div>
+      <div class="status" id="status">Выберите стиль</div>
     </div>
-    <div class="status" id="status">Выберите стиль</div>
+
+    <!-- Правая рамка - JAGER -->
+    <div class="frame right">
+      <div class="frame-header">JAGER</div>
+      <div class="frame-body">
+        <div class="equalizer" id="eq-right"></div>
+      </div>
+      <div class="frame-footer">0x74836cc0e821a6be18e407e6388e430b689c66e9</div>
+    </div>
   </div>
 
   <audio id="radioPlayer"></audio>
 
   <script>
-    // Элементы DOM
+    // DOM элементы
     const genres = document.querySelectorAll('.genre-btn');
     const playBtn = document.getElementById('playBtn');
     const stopBtn = document.getElementById('stopBtn');
@@ -162,7 +284,7 @@
     const nowPlaying = document.getElementById('nowPlaying');
     const audio = document.getElementById('radioPlayer');
 
-    // 🔉 Прямые ссылки на потоки (убраны пробелы)
+    // Ссылки на потоки (очищены от пробелов)
     const streams = {
       house:     "https://ice4.somafm.com/beatblender-128-mp3",
       techno:    "https://ice4.somafm.com/groovesalad-128-aac",
@@ -174,26 +296,23 @@
       electro:   "https://ice2.somafm.com/deepspaceone-128-mp3"
     };
 
-    // Названия жанров для отображения
     const genreNames = {
       house: 'House', techno: 'Techno', dubstep: 'Dubstep',
       trance: 'Trance', dnb: 'D&B', lofi: 'Lo-fi',
       synthwave: 'Synthwave', electro: 'Electro'
     };
 
-    // Получаем последний выбранный жанр из localStorage или устанавливаем по умолчанию
     let currentGenre = localStorage.getItem('jager-genre') || 'techno';
 
-    // Функция для установки активной кнопки
+    // Установка активного жанра
     function setActiveGenre(genre) {
       genres.forEach(btn => {
         btn.classList.toggle('active', btn.dataset.genre === genre);
       });
-      // Обновляем статус
-      status.textContent = `Выбран: ${genreNames[genre] || genre}`;
+      status.textContent = `Выбран: ${genreNames[genre]}`;
     }
 
-    // Переключение жанра
+    // Обработка кликов по жанрам
     genres.forEach(btn => {
       btn.addEventListener('click', () => {
         const selectedGenre = btn.dataset.genre;
@@ -202,10 +321,9 @@
           localStorage.setItem('jager-genre', currentGenre);
           setActiveGenre(currentGenre);
           
-          // Если радио играет, останавливаем и готовим к новому запуску
           if (!audio.paused) {
             audio.pause();
-            audio.src = ''; // Очищаем источник
+            audio.src = '';
             playBtn.disabled = false;
             stopBtn.disabled = true;
           }
@@ -213,46 +331,153 @@
       });
     });
 
-    // Воспроизведение
+    // Играем
     playBtn.addEventListener('click', () => {
       const streamUrl = streams[currentGenre];
-      
-      // Полностью очищаем предыдущий источник
-      audio.src = '';
       audio.src = streamUrl;
       
       audio.play()
         .then(() => {
-          status.textContent = `🔊 Играет: ${genreNames[currentGenre] || currentGenre}`;
-          nowPlaying.textContent = `🎧 ${genreNames[currentGenre] || currentGenre}`;
+          status.textContent = `🔊 Играет: ${genreNames[currentGenre]}`;
+          nowPlaying.textContent = `🎧 ${genreNames[currentGenre]}`;
           playBtn.disabled = true;
           stopBtn.disabled = false;
+          startEqualizers(); // Запускаем эквалайзеры
         })
         .catch(err => {
-          console.error('Ошибка воспроизведения:', err);
-          status.textContent = `❌ Ошибка: ${err.message || 'Не удалось запустить'}`;
+          console.error('Ошибка:', err);
+          status.textContent = `❌ Ошибка: ${err.message}`;
           playBtn.disabled = false;
           stopBtn.disabled = true;
         });
     });
 
-    // Остановка
+    // Останавливаем
     stopBtn.addEventListener('click', () => {
       audio.pause();
-      audio.src = ''; // Очищаем источник при остановке
+      audio.src = '';
       status.textContent = '⏸ Остановлено';
       nowPlaying.textContent = '🎵 Готово к запуску';
       playBtn.disabled = false;
       stopBtn.disabled = true;
+      stopEqualizers();
     });
 
-    // Инициализация при загрузке страницы
+    // Инициализация
     document.addEventListener('DOMContentLoaded', () => {
       setActiveGenre(currentGenre);
       playBtn.disabled = false;
       stopBtn.disabled = true;
-      nowPlaying.textContent = `🎧 Готов к ${genreNames[currentGenre] || currentGenre}`;
+      nowPlaying.textContent = `🎧 Готов к ${genreNames[currentGenre]}`;
     });
+
+    // --- Эквалайзеры ---
+    const eqLeft = document.getElementById('eq-left');
+    const eqRight = document.getElementById('eq-right');
+    const barCount = 15;
+
+    function createBars(container) {
+      for (let i = 0; i < barCount; i++) {
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.height = '0px';
+        container.appendChild(bar);
+      }
+    }
+
+    createBars(eqLeft);
+    createBars(eqRight);
+
+    let analyser, dataArray;
+    let animationId;
+
+    function startEqualizers() {
+      if (!audio.src) return;
+      
+      const ctx = audio.getContext ? audio.getContext() : new (window.AudioContext || window.webkitAudioContext)();
+      const source = ctx.createMediaElementSource(audio);
+      analyser = ctx.createAnalyser();
+      analyser.fftSize = 256;
+      source.connect(analyser);
+      analyser.connect(ctx.destination);
+      
+      dataArray = new Uint8Array(analyser.frequencyBinCount);
+      
+      updateBars();
+    }
+
+    function stopEqualizers() {
+      if (animationId) cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+
+    function updateBars() {
+      if (!analyser) return;
+      
+      analyser.getByteFrequencyData(dataArray);
+      
+      const barsLeft = eqLeft.querySelectorAll('.bar');
+      const barsRight = eqRight.querySelectorAll('.bar');
+      
+      // Рандомизация цветов (красные и зелёные)
+      for (let i = 0; i < barsLeft.length; i++) {
+        const val = dataArray[i * 2] / 255;
+        const height = val * 100 + 5;
+        
+        barsLeft[i].style.height = `${height}%`;
+        barsRight[i].style.height = `${height}%`;
+        
+        // Красные и зелёные свечи
+        if (i % 2 === 0) {
+          barsLeft[i].className = 'bar red';
+          barsRight[i].className = 'bar red';
+        } else {
+          barsLeft[i].className = 'bar';
+          barsRight[i].className = 'bar';
+        }
+      }
+      
+      animationId = requestAnimationFrame(updateBars);
+    }
+
+    // --- Курс токенов ---
+    async function fetchPrice(token) {
+      try {
+        const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${token}&vs_currencies=usd`);
+        const data = await res.json();
+        return data[token]?.usd || 'N/A';
+      } catch (err) {
+        console.error('Ошибка получения цены:', err);
+        return 'N/A';
+      }
+    }
+
+    // Обновление цен каждые 60 секунд
+    setInterval(async () => {
+      const bnbPrice = await fetchPrice('binancecoin');
+      const jagerPrice = await fetchPrice('jager'); // Если нет JAGER в Coingecko, можно использовать dummy
+
+      // Обновляем текст
+      const bnbHeader = document.querySelector('.frame.left .frame-header');
+      const jagerHeader = document.querySelector('.frame.right .frame-header');
+
+      if (bnbHeader && jagerHeader) {
+        bnbHeader.textContent = `BNB $${bnbPrice.toFixed(2)}`;
+        jagerHeader.textContent = `JAGER $${jagerPrice.toFixed(2)}`;
+      }
+    }, 60000); // 60000 мс = 1 минута
+
+    // Загрузка начальных цен
+    setTimeout(async () => {
+      const bnbPrice = await fetchPrice('binancecoin');
+      const jagerPrice = await fetchPrice('jager');
+      
+      const bnbHeader = document.querySelector('.frame.left .frame-header');
+      const jagerHeader = document.querySelector('.frame.right .frame-header');
+      
+      if (bnbHeader) bnbHeader.textContent = `BNB $${bnbPrice.toFixed(2)}`;
+      if (jagerHeader) jagerHeader.textContent = `JAGER $${jagerPrice.toFixed(2)}`;
+    }, 1000);
   </script>
 </body>
 </html>
