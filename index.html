@@ -76,6 +76,8 @@
       overflow: hidden;
       box-shadow: 0 0 20px rgba(0,0,0,0.6);
       color: white;
+      display: flex;
+      flex-direction: column;
     }
 
     .news-header {
@@ -91,7 +93,7 @@
       list-style: none;
       padding: 0;
       margin: 0;
-      height: 500px;
+      height: 100%;
       overflow-y: auto;
     }
 
@@ -108,55 +110,18 @@
 
     .news-title {
       font-size: 1.1em;
-      margin: 0;
+      margin: 0 0 5px 0;
       color: #FFD700;
       word-wrap: break-word;
       line-height: 1.3;
     }
 
-    /* Правая рамка (твиты) */
-    .twitter-panel {
-      width: 350px;
-      height: 600px;
-      background: #111;
-      border: 10px solid #333;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
-      color: white;
-    }
-
-    .twitter-header {
-      padding: 10px;
-      font-size: 1.2em;
-      font-weight: 800;
-      color: #1DA1F2;
-      text-align: center;
-      border-bottom: 2px solid #333;
-    }
-
-    .tweet {
-      padding: 10px;
-      border-bottom: 1px solid #333;
-      color: #ddd;
+    .news-body {
+      display: none;
+      padding: 10px 0 5px 0;
+      color: #ccc;
       font-size: 0.9em;
-      line-height: 1.4;
-    }
-
-    .tweet a {
-      color: #1DA1F2;
-    }
-
-    .pinned {
-      background: #1a1a1a;
-      border-top: 2px solid #1DA1F2;
-      padding: 10px;
-      margin: 10px 0;
-    }
-
-    .pinned-text {
-      font-weight: 700;
-      color: #1DA1F2;
+      line-height: 1.5;
     }
 
     /* Центральная панель */
@@ -245,7 +210,11 @@
     <!-- Левая рамка (новости) -->
     <div class="news-panel">
       <div class="news-header">Binance News</div>
-      <ul class="news-list" id="newsList"></ul>
+      <ul class="news-list" id="newsList">
+        <li class="news-item">
+          <h3 class="news-title">Загрузка новостей...</h3>
+        </li>
+      </ul>
     </div>
 
     <!-- Центральная панель -->
@@ -272,10 +241,15 @@
       <div class="status" id="status">Выберите стиль</div>
     </div>
 
-    <!-- Правая рамка (твиты) -->
-    <div class="twitter-panel">
-      <div class="twitter-header">Latest from @cz_binance</div>
-      <div id="tweets"></div>
+    <!-- Правая рамка (пустая для будущего использования) -->
+    <div class="news-panel">
+      <div class="news-header">Информация</div>
+      <ul class="news-list">
+        <li class="news-item">
+          <h3 class="news-title">Дополнительная панель</h3>
+          <div class="news-body">Здесь может быть другая информация.</div>
+        </li>
+      </ul>
     </div>
   </div>
 
@@ -368,72 +342,49 @@
 
     // === НОВОСТИ BINANCE (через RSSHub) ===
     async function fetchNews() {
+      const newsList = document.getElementById('newsList');
       try {
-        const res = await fetch('https://rsshub.app/binance/news');
+        // Попытка получить данные через CORS-прокси
+        const proxyUrl = 'https://api.allorigins.win/raw?url=';
+        const targetUrl = encodeURIComponent('https://rsshub.app/binance/news');
+        const res = await fetch(proxyUrl + targetUrl);
+        
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        
         const data = await res.json();
 
-        const newsList = document.getElementById('newsList');
         newsList.innerHTML = '';
-        data.items.slice(0, 3).forEach(item => {
-          const li = document.createElement('li');
-          li.className = 'news-item';
-          li.innerHTML = `
-            <h3 class="news-title">${item.title}</h3>
-            <div class="news-body">${item.description}</div>
-          `;
-          li.addEventListener('click', () => {
-            const body = li.querySelector('.news-body');
-            body.style.display = body.style.display === 'none' ? 'block' : 'none';
+        if (data.items && data.items.length > 0) {
+          data.items.slice(0, 5).forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'news-item';
+            // Ограничиваем длину заголовка
+            const title = item.title.length > 100 ? item.title.substring(0, 100) + '...' : item.title;
+            // Ограничиваем длину описания
+            const description = item.description ? (item.description.length > 200 ? item.description.substring(0, 200) + '...' : item.description) : 'Описание отсутствует';
+            
+            li.innerHTML = `
+              <h3 class="news-title">${title}</h3>
+              <div class="news-body">${description}</div>
+            `;
+            li.addEventListener('click', () => {
+              const body = li.querySelector('.news-body');
+              body.style.display = body.style.display === 'none' ? 'block' : 'none';
+            });
+            newsList.appendChild(li);
           });
-          newsList.appendChild(li);
-        });
+        } else {
+          newsList.innerHTML = '<li class="news-item"><h3 class="news-title">Новости не найдены</h3></li>';
+        }
       } catch (err) {
         console.error('Ошибка получения новостей:', err);
+        newsList.innerHTML = '<li class="news-item"><h3 class="news-title">Ошибка загрузки новостей</h3></li>';
       }
     }
 
-    setInterval(fetchNews, 300000);
+    // Загружаем новости при старте и обновляем каждые 5 минут
     fetchNews();
-
-    // === ТВИТЫ @cz_binance ===
-    function fetchTweets() {
-      try {
-        const tweets = document.getElementById('tweets');
-        tweets.innerHTML = '<p>Подключение...</p>';
-        
-        // Тестовые данные
-        const fakeTweets = [
-          { pinned: true, text: "🚀 Binance is committed to building the future of finance. Innovation, security, and user empowerment are our core values. #Crypto #Web3", time: "2 ч назад" },
-          { pinned: false, text: "Just visited our new data center in Singapore. Cutting-edge tech, zero emissions. Proud of the team! 💚", time: "5 ч назад" }
-        ];
-
-        tweets.innerHTML = '';
-        fakeTweets.forEach(tweet => {
-          const div = document.createElement('div');
-          div.className = 'tweet';
-          if (tweet.pinned) {
-            div.innerHTML = `
-              <div class="pinned">
-                <strong class="pinned-text">📌 Прикреплено</strong><br>
-                ${tweet.text}<br>
-                <small>${tweet.time}</small>
-              </div>
-            `;
-          } else {
-            div.innerHTML = `
-              ${tweet.text}<br>
-              <small>${tweet.time}</small>
-            `;
-          }
-          tweets.appendChild(div);
-        });
-      } catch (err) {
-        console.error('Ошибка получения твитов:', err);
-      }
-    }
-
-    setInterval(fetchTweets, 60000);
-    fetchTweets();
+    setInterval(fetchNews, 300000); // 5 минут
   </script>
 </body>
 </html>
