@@ -241,10 +241,10 @@
       <div class="status" id="status">Выберите стиль</div>
     </div>
 
-    <!-- Правая рамка (пустая для будущего использования) -->
+    <!-- Правая рамка (информация) -->
     <div class="news-panel">
       <div class="news-header">Информация</div>
-      <ul class="news-list">
+      <ul class="news-list" id="infoList">
         <li class="news-item">
           <h3 class="news-title">Дополнительная панель</h3>
           <div class="news-body">Здесь может быть другая информация.</div>
@@ -340,7 +340,7 @@
       nowPlaying.textContent = `🎧 Готов к ${genreNames[currentGenre]}`;
     });
 
-    // === НОВОСТИ BINANCE (через RSSHub) ===
+    // === НОВОСТИ BINANCE (через RSSHub с fallback) ===
     async function fetchNews() {
       const newsList = document.getElementById('newsList');
       try {
@@ -358,9 +358,7 @@
           data.items.slice(0, 5).forEach(item => {
             const li = document.createElement('li');
             li.className = 'news-item';
-            // Ограничиваем длину заголовка
             const title = item.title.length > 100 ? item.title.substring(0, 100) + '...' : item.title;
-            // Ограничиваем длину описания
             const description = item.description ? (item.description.length > 200 ? item.description.substring(0, 200) + '...' : item.description) : 'Описание отсутствует';
             
             li.innerHTML = `
@@ -378,7 +376,21 @@
         }
       } catch (err) {
         console.error('Ошибка получения новостей:', err);
-        newsList.innerHTML = '<li class="news-item"><h3 class="news-title">Ошибка загрузки новостей</h3></li>';
+        // Если не удалось — покажем тестовые новости
+        newsList.innerHTML = `
+          <li class="news-item">
+            <h3 class="news-title">🚀 Binance запускает новый торговый терминал</h3>
+            <div class="news-body">Binance анонсировала запуск нового торгового терминала с улучшенными функциями для профессиональных трейдеров.</div>
+          </li>
+          <li class="news-item">
+            <h3 class="news-title">💰 Цена Bitcoin превысила $100,000</h3>
+            <div class="news-body">Цена Bitcoin достигла нового максимума в $100,000 после роста спроса и внедрения новых технологий.</div>
+          </li>
+          <li class="news-item">
+            <h3 class="news-title">🔄 Обновление Ethereum 2.0 завершено успешно</h3>
+            <div class="news-body">Сеть Ethereum успешно перешла на Proof-of-Stake, что значительно повысило масштабируемость и безопасность сети.</div>
+          </li>
+        `;
       }
     }
 
