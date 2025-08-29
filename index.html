@@ -126,7 +126,7 @@
       font-weight: 700;
     }
 
-    /* Стиль таймера */
+    /* Таймер */
     .countdown {
       font-size: 1.5em;
       font-weight: 800;
@@ -169,9 +169,9 @@
     </div>
     <div class="status" id="status">Выберите стиль</div>
 
-    <!-- Таймер TGE -->
+    <!-- Таймер до 10 сентября 2025 -->
     <div class="countdown" id="countdown">
-      TGE: <span id="days">30</span>d <span id="hours">12</span>h <span id="minutes">12</span>m
+      TGE: <span id="days">00</span>d <span id="hours">00</span>h <span id="minutes">00</span>m
     </div>
   </div>
 
@@ -186,7 +186,7 @@
     const nowPlaying = document.getElementById('nowPlaying');
     const audio = document.getElementById('radioPlayer');
 
-    // 🔉 Прямые ссылки на потоки
+    // Рабочие потоки (MP3)
     const streams = {
       house:     "https://ice4.somafm.com/beatblender-128-mp3",
       techno:    "https://ice4.somafm.com/groovesalad-128-mp3",
@@ -213,6 +213,7 @@
       status.textContent = `Выбран: ${genreNames[genre] || genre}`;
     }
 
+    // Переключение жанра
     genres.forEach(btn => {
       btn.addEventListener('click', () => {
         const selectedGenre = btn.dataset.genre;
@@ -231,25 +232,26 @@
       });
     });
 
-    playBtn.addEventListener('click', () => {
+    // Воспроизведение
+    playBtn.addEventListener('click', async () => {
       const streamUrl = streams[currentGenre];
       audio.src = streamUrl;
       
-      audio.play()
-        .then(() => {
-          status.textContent = `🔊 Играет: ${genreNames[currentGenre] || currentGenre}`;
-          nowPlaying.textContent = `🎧 ${genreNames[currentGenre] || currentGenre}`;
-          playBtn.disabled = true;
-          stopBtn.disabled = false;
-        })
-        .catch(err => {
-          console.error('Ошибка воспроизведения:', err);
-          status.textContent = `❌ Ошибка: ${err.message || 'Не удалось запустить'}`;
-          playBtn.disabled = false;
-          stopBtn.disabled = true;
-        });
+      try {
+        await audio.play();
+        status.textContent = `🔊 Играет: ${genreNames[currentGenre]}`;
+        nowPlaying.textContent = `🎧 ${genreNames[currentGenre]}`;
+        playBtn.disabled = true;
+        stopBtn.disabled = false;
+      } catch (err) {
+        console.error('Ошибка воспроизведения:', err);
+        status.textContent = `❌ Ошибка: ${err.message || 'Не удалось запустить'}`;
+        playBtn.disabled = false;
+        stopBtn.disabled = true;
+      }
     });
 
+    // Остановка
     stopBtn.addEventListener('click', () => {
       audio.pause();
       audio.src = '';
@@ -259,23 +261,23 @@
       stopBtn.disabled = true;
     });
 
+    // Инициализация
     document.addEventListener('DOMContentLoaded', () => {
       setActiveGenre(currentGenre);
       playBtn.disabled = false;
       stopBtn.disabled = true;
-      nowPlaying.textContent = `🎧 Готов к ${genreNames[currentGenre] || currentGenre}`;
+      nowPlaying.textContent = `🎧 Готов к ${genreNames[currentGenre]}`;
     });
 
-    // --- Таймер TGE: 30 дней, 12 часов, 12 минут ---
-    const startTime = new Date().getTime();
-    const totalDuration = (30 * 24 * 60 + 12 * 60 + 12) * 60 * 1000; // 30d 12h 12m в миллисекундах
+    // --- Таймер до 10 сентября 2025, 00:00 UTC ---
+    const targetDate = new Date("2025-09-10T00:00:00Z").getTime();
 
     function updateCountdown() {
-      const elapsed = new Date().getTime() - startTime;
-      let remaining = totalDuration - elapsed;
+      const now = new Date().getTime();
+      const remaining = targetDate - now;
 
       if (remaining < 0) {
-        document.getElementById('countdown').innerHTML = "🎉 TGE ЗАВЕРШЁН!";
+        document.getElementById('countdown').innerHTML = "🎉 Happy Birthday to You!";
         return;
       }
 
@@ -283,14 +285,14 @@
       const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
 
-      document.getElementById('days').textContent = days;
-      document.getElementById('hours').textContent = hours;
-      document.getElementById('minutes').textContent = minutes;
+      document.getElementById('days').textContent = days.toString().padStart(2, '0');
+      document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+      document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
     }
 
-    // Обновляем таймер каждую секунду
-    setInterval(updateCountdown, 1000);
-    updateCountdown(); // Первый вызов
+    // Обновляем каждую минуту
+    setInterval(updateCountdown, 60000);
+    updateCountdown();
   </script>
 </body>
 </html>
