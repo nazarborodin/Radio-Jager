@@ -66,12 +66,12 @@
       box-sizing: border-box;
     }
 
-    /* Левая панель (новости) */
+    /* Левая рамка (новости) */
     .news-panel {
-      width: 300px;
+      width: 350px;
       height: 600px;
       background: #000;
-      border: 8px solid #333;
+      border: 10px solid #333;
       border-radius: 15px;
       overflow: hidden;
       box-shadow: 0 0 20px rgba(0,0,0,0.6);
@@ -114,34 +114,12 @@
       line-height: 1.3;
     }
 
-    .news-img {
-      width: 100%;
-      height: 100px;
-      object-fit: cover;
-      margin: 5px 0;
-      border-radius: 5px;
-    }
-
-    .news-body {
-      display: none;
-      padding: 10px;
-      color: #ccc;
-      font-size: 0.9em;
-      line-height: 1.5;
-      animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    /* Правая панель (твиты) */
+    /* Правая рамка (твиты) */
     .twitter-panel {
-      width: 300px;
-      height: 400px;
+      width: 350px;
+      height: 600px;
       background: #111;
-      border: 8px solid #333;
+      border: 10px solid #333;
       border-radius: 15px;
       overflow: hidden;
       box-shadow: 0 0 20px rgba(0,0,0,0.6);
@@ -166,6 +144,18 @@
     }
 
     .tweet a {
+      color: #1DA1F2;
+    }
+
+    .pinned {
+      background: #1a1a1a;
+      border-top: 2px solid #1DA1F2;
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    .pinned-text {
+      font-weight: 700;
       color: #1DA1F2;
     }
 
@@ -252,7 +242,7 @@
 </head>
 <body>
   <div class="container">
-    <!-- Левая панель (новости) -->
+    <!-- Левая рамка (новости) -->
     <div class="news-panel">
       <div class="news-header">Binance News</div>
       <ul class="news-list" id="newsList"></ul>
@@ -282,7 +272,7 @@
       <div class="status" id="status">Выберите стиль</div>
     </div>
 
-    <!-- Правая панель (твиты) -->
+    <!-- Правая рамка (твиты) -->
     <div class="twitter-panel">
       <div class="twitter-header">Latest from @cz_binance</div>
       <div id="tweets"></div>
@@ -405,14 +395,13 @@
     setInterval(fetchNews, 300000);
     fetchNews();
 
-    // === ТВИТЫ @cz_binance (через WebSocket) ===
+    // === ТВИТЫ @cz_binance ===
     function fetchTweets() {
       try {
         const tweets = document.getElementById('tweets');
         tweets.innerHTML = '<p>Подключение...</p>';
         
-        // В реальности нужно использовать Twitter API или WebSocket
-        // Это тестовые данные
+        // Тестовые данные
         const fakeTweets = [
           { pinned: true, text: "🚀 Binance is committed to building the future of finance. Innovation, security, and user empowerment are our core values. #Crypto #Web3", time: "2 ч назад" },
           { pinned: false, text: "Just visited our new data center in Singapore. Cutting-edge tech, zero emissions. Proud of the team! 💚", time: "5 ч назад" }
@@ -422,11 +411,20 @@
         fakeTweets.forEach(tweet => {
           const div = document.createElement('div');
           div.className = 'tweet';
-          div.innerHTML = `
-            ${tweet.pinned ? '<strong>📌 Прикреплено</strong><br>' : ''}
-            ${tweet.text}<br>
-            <small>${tweet.time}</small>
-          `;
+          if (tweet.pinned) {
+            div.innerHTML = `
+              <div class="pinned">
+                <strong class="pinned-text">📌 Прикреплено</strong><br>
+                ${tweet.text}<br>
+                <small>${tweet.time}</small>
+              </div>
+            `;
+          } else {
+            div.innerHTML = `
+              ${tweet.text}<br>
+              <small>${tweet.time}</small>
+            `;
+          }
           tweets.appendChild(div);
         });
       } catch (err) {
