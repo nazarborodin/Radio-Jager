@@ -10,11 +10,11 @@
   <link rel="apple-touch-icon" href="favicon.png">
 
   <!-- Описание сайта -->
-  <meta name="description" content="JAGER Radio — 8 стилей электронной музыки без остановки: House, Techno, Dubstep, Trance, D&B, Lo-fi, Synthwave, Electro">
+  <meta name="description" content="JAGER Radio BNB: House, Techno, Dubstep, Trance, D&B, Lo-fi, Synthwave, Electro">
 
   <!-- Open Graph / Превью в Telegram, WhatsApp, VK -->
   <meta property="og:title" content="JAGER Radio">
-  <meta property="og:description" content="🎧 Слушай 8 стилей электронной музыки онлайн — House, Techno, Dubstep, Trance и другие">
+  <meta property="og:description" content="🎧 JAGER Radio BNB — House, Techno, Dubstep, Trance и другие">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://nazarborodin.github.io/Radio-Jager  ">
   <meta property="og:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg  ">
@@ -23,7 +23,7 @@
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://nazarborodin.github.io/Radio-Jager  ">
   <meta property="twitter:title" content="JAGER Radio">
-  <meta property="twitter:description" content="🎧 Электронная музыка 24/7 — выбери свой стиль">
+  <meta property="twitter:description" content="🎧 JAGER Radio BNB">
   <meta property="twitter:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg  ">
 
   <!-- PWA -->
@@ -142,13 +142,13 @@
       <button class="genre-btn" data-genre="electro">⚡ Electro</button>
     </div>
 
-    <div class="now-playing" id="nowPlaying">🎵 Трек не найден</div>
+    <div class="now-playing" id="nowPlaying">🎵 JAGER Radio BNB</div>
 
     <div class="play-controls">
-      <button id="playBtn">▶ Запустить</button>
-      <button id="stopBtn" disabled>⏹ Стоп</button>
+      <button id="playBtn">▶ PLAY</button>
+      <button id="stopBtn" disabled>⏹ STOP</button>
     </div>
-    <div class="status" id="status">Выберите стиль</div>
+    <div class="status" id="status">JAGER Radio BNB</div>
   </div>
 
   <audio id="radioPlayer"></audio>
@@ -223,7 +223,7 @@
       
       audio.play()
         .then(() => {
-          status.textContent = `🔊 Играет: ${genreNames[currentGenre] || currentGenre}`;
+          status.textContent = `🔊 PLAY: ${genreNames[currentGenre] || currentGenre}`;
           nowPlaying.textContent = `🎧 ${genreNames[currentGenre] || currentGenre}`;
           playBtn.disabled = true;
           stopBtn.disabled = false;
@@ -240,8 +240,8 @@
     stopBtn.addEventListener('click', () => {
       audio.pause();
       audio.src = ''; // Очищаем источник при остановке
-      status.textContent = '⏸ Остановлено';
-      nowPlaying.textContent = '🎵 Готово к запуску';
+      status.textContent = '⏸ STOP';
+      nowPlaying.textContent = '🎵 JAGER Radio BNB';
       playBtn.disabled = false;
       stopBtn.disabled = true;
     });
@@ -251,7 +251,7 @@
       setActiveGenre(currentGenre);
       playBtn.disabled = false;
       stopBtn.disabled = true;
-      nowPlaying.textContent = `🎧 Готов к ${genreNames[currentGenre] || currentGenre}`;
+      nowPlaying.textContent = `🎧 PLAY к ${genreNames[currentGenre] || currentGenre}`;
     });
   </script>
 </body>
