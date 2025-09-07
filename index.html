@@ -5,95 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>JAGER Radio</title>
 
-  <!-- Favicon -->
+  <!-- Favicon -->                                                                                                                                                                                                                    
   <link rel="icon" href="favicon.png" sizes="192x192">
   <link rel="apple-touch-icon" href="favicon.png">
-
-    <!-- OptanonConsentNoticeStart -->
-<script
-  src="https://cdn-apac.onetrust.com/scripttemplates/otSDKStub.js"
-  data-document-language="true"
-  type="text/javascript"
-  charset="UTF-8"
-  defer
-  data-domain-script="49e8a847-f2c7-4b58-a340-caf0924064fe"
-></script>
-<script type="text/javascript">
-  const STRICT_COOKIE = "C0001";
-  const PERF_COOKIE = "C0002";
-  const FUNC_COOKIE = "C0003";
-  const TARGET_COOKIE = "C0004";
-
-  const YT_DOMAIN = "www.youtube.com";
-  const TW_DOMAIN = "platform.twitter.com";
-  const TW_CONTAINER = "twitter-tweet";
-
-  const CONTENT_PLACEHOLDER = "content-placeholder";
-
-  // TODO: confirm if i18n needed
-  const contentPlaceholderTemplate = `
-    <div class="tw-p-6 dark:tw-bg-moon-900">
-      <div class="tw-flex tw-flex-col tw-gap-4">
-        <div class="tw-p-6 tw-border-solid tw-border-2 tw-border-gray-200 tw-rounded-lg dark:tw-border-moon-800">
-          <div class="tw-flex">
-            <div class="tw-flex-shrink-0">
-              <i class="tw-text-sm fas fa-exclamation-triangle tw-text-gray-700 dark:tw-text-moon-100"></i>
-            </div>
-            <div class="tw-ml-3">
-              <div class="tw-text-gray-700 dark:tw-text-moon-100 tw-font-semibold tw-text-base tw-leading-6 tw-flex-grow tw-mb-1">
-                Couldn't load content
-              </div>
-              <div class="tw-font-normal tw-text-gray-500 dark:tw-text-moon-200 tw-text-base tw-leading-6 tw-flex-grow">
-                This feature is currently not available because you need to provide consent to functional cookies.
-                Please update your
-                <span class="tw-cursor-pointer tw-font-semibold tw-underline tw-text-gray-700
-                             hover:tw-text-primary-500 hover:tw-underline dark:tw-text-slate-50 dark:hover:tw-text-primary-400"
-                      onclick="javascript:openPrefCenter();">Cookie Preferences</span>.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  function openPrefCenter() {
-    if (window.OneTrust === undefined) { return; }
-
-    OneTrust.ToggleInfoDisplay();
-  }
-
-  // Convenient function to extract consent values from OneTrust cookie,
-  // returns an object containing category as key, true/false as value
-  function getConsentCookies() {
-    if (OnetrustActiveGroups === undefined) { return {}; }
-
-    const categories = OnetrustActiveGroups.split(",").filter(c => c !== "");
-
-    if (categories.length === 0) { return {}; }
-
-    return categories.reduce(function (acc, cat) {
-      acc[cat] = true;
-      return acc;
-    }, {});
-  }
 
   <!-- Описание сайта -->
   <meta name="description" content="JAGER Radio — 8 стилей электронной музыки без остановки: House, Techno, Dubstep, Trance, D&B, Lo-fi, Synthwave, Electro">
 
-  <!-- Open Graph -->
+  <!-- Open Graph / Превью в Telegram, WhatsApp, VK -->
   <meta property="og:title" content="JAGER Radio">
   <meta property="og:description" content="🎧 Слушай 8 стилей электронной музыки онлайн — House, Techno, Dubstep, Trance и другие">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://nazarborodin.github.io/Radio-Jager">
-  <meta property="og:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg">
+  <meta property="og:url" content="https://nazarborodin.github.io/Radio-Jager  ">
+  <meta property="og:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg  ">
 
   <!-- Twitter Card -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://nazarborodin.github.io/Radio-Jager">
+  <meta property="twitter:url" content="https://nazarborodin.github.io/Radio-Jager  ">
   <meta property="twitter:title" content="JAGER Radio">
   <meta property="twitter:description" content="🎧 Электронная музыка 24/7 — выбери свой стиль">
-  <meta property="twitter:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg">
+  <meta property="twitter:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg  ">
 
   <!-- PWA -->
   <meta name="theme-color" content="#FFD700">
@@ -124,85 +55,13 @@
     }
 
     .container {
-      position: relative;
-      width: 90%;
-      max-width: 1200px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 30px;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-
-    /* Левая рамка (новости) */
-    .news-panel {
-      width: 350px;
-      height: 600px;
-      background: #000;
-      border: 10px solid #333;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
-      color: white;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .news-header {
-      padding: 10px;
-      font-size: 1.2em;
-      font-weight: 800;
-      color: #FFD700;
-      text-align: center;
-      border-bottom: 2px solid #333;
-    }
-
-    .news-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      height: 100%;
-      overflow-y: auto;
-    }
-
-    .news-item {
-      padding: 10px;
-      border-bottom: 1px solid #333;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .news-item:hover {
-      background: #111;
-    }
-
-    .news-title {
-      font-size: 1.1em;
-      margin: 0 0 5px 0;
-      color: #FFD700;
-      word-wrap: break-word;
-      line-height: 1.3;
-    }
-
-    .news-body {
-      display: none;
-      padding: 10px 0 5px 0;
-      color: #ccc;
-      font-size: 0.9em;
-      line-height: 1.5;
-    }
-
-    /* Центральная панель */
-    .center-panel {
       background: rgba(255, 255, 255, 0.95);
-      padding: 30px;
+      padding: 50px;
       border-radius: 25px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      width: 500px;
-      max-width: 80%;
+      max-width: 800px;
+      width: 90%;
       border: 2px solid var(--border);
-      text-align: center;
     }
 
     .brand {
@@ -210,7 +69,7 @@
       font-weight: 900;
       color: var(--text);
       letter-spacing: 3px;
-      margin: 10px 0;
+      margin: 5px 0 15px;
     }
 
     .genres {
@@ -224,7 +83,7 @@
       background: var(--accent);
       color: #000;
       border: 2px solid #000;
-      padding: 12px 10px;
+      padding: 15px 10px;
       border-radius: 20px;
       cursor: pointer;
       font-size: 1.1em;
@@ -266,66 +125,36 @@
       min-height: 24px;
       font-weight: 700;
     }
-
-    .logo {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 20px;
-    }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Левая рамка (новости) -->
-    <div class="news-panel">
-      <div class="news-header">Binance News</div>
-      <ul class="news-list" id="newsList">
-        <li class="news-item">
-          <h3 class="news-title">Загрузка новостей...</h3>
-        </li>
-      </ul>
+    <img src="logo.png" alt="JAGER Radio" class="brand" style="height: 80px;">
+
+    <div class="genres" id="genres">
+      <button class="genre-btn" data-genre="house">🏠 House</button>
+      <button class="genre-btn" data-genre="techno">🏭 Techno</button>
+      <button class="genre-btn" data-genre="dubstep">🔊 Dubstep</button>
+      <button class="genre-btn" data-genre="trance">🌀 Trance</button>
+      <button class="genre-btn" data-genre="dnb">🥁 D&B</button>
+      <button class="genre-btn" data-genre="lofi">🎧 Lo-fi</button>
+      <button class="genre-btn" data-genre="synthwave">📼 Synthwave</button>
+      <button class="genre-btn" data-genre="electro">⚡ Electro</button>
     </div>
 
-    <!-- Центральная панель -->
-    <div class="center-panel">
-      <img src="logo.png" alt="JAGER Radio" class="brand logo">
-      
-      <div class="genres" id="genres">
-        <button class="genre-btn" data-genre="house">🏠 House</button>
-        <button class="genre-btn" data-genre="techno">🏭 Techno</button>
-        <button class="genre-btn" data-genre="dubstep">🔊 Dubstep</button>
-        <button class="genre-btn" data-genre="trance">🌀 Trance</button>
-        <button class="genre-btn" data-genre="dnb">🥁 D&B</button>
-        <button class="genre-btn" data-genre="lofi">🎧 Lo-fi</button>
-        <button class="genre-btn" data-genre="synthwave">📼 Synthwave</button>
-        <button class="genre-btn" data-genre="electro">⚡ Electro</button>
-      </div>
+    <div class="now-playing" id="nowPlaying">🎵 Трек не найден</div>
 
-      <div class="now-playing" id="nowPlaying">🎵 Трек не найден</div>
-
-      <div class="play-controls">
-        <button id="playBtn">▶ Запустить</button>
-        <button id="stopBtn" disabled>⏹ Стоп</button>
-      </div>
-      <div class="status" id="status">Выберите стиль</div>
+    <div class="play-controls">
+      <button id="playBtn">▶ Запустить</button>
+      <button id="stopBtn" disabled>⏹ Стоп</button>
     </div>
-
-    <!-- Правая рамка (информация) -->
-    <div class="news-panel">
-      <div class="news-header">Информация</div>
-      <ul class="news-list" id="infoList">
-        <li class="news-item">
-          <h3 class="news-title">Дополнительная панель</h3>
-          <div class="news-body">Здесь может быть другая информация.</div>
-        </li>
-      </ul>
-    </div>
+    <div class="status" id="status">Выберите стиль</div>
   </div>
 
   <audio id="radioPlayer"></audio>
 
   <script>
-    // === РАДИО ===
+    // Элементы DOM
     const genres = document.querySelectorAll('.genre-btn');
     const playBtn = document.getElementById('playBtn');
     const stopBtn = document.getElementById('stopBtn');
@@ -333,32 +162,38 @@
     const nowPlaying = document.getElementById('nowPlaying');
     const audio = document.getElementById('radioPlayer');
 
+    // 🔉 Прямые ссылки на потоки (убраны пробелы)
     const streams = {
-      house:     "https://ice4.somafm.com/beatblender-128-mp3",
-      techno:    "https://ice4.somafm.com/groovesalad-128-mp3",
-      dubstep:   "https://ice2.somafm.com/n5md-128-mp3",
-      trance:    "https://ice2.somafm.com/live-128-mp3",
-      dnb:       "https://ice2.somafm.com/folkfwd-128-mp3",
-      lofi:      "https://ice4.somafm.com/suburbsofgoa-128-mp3",
-      synthwave: "https://ice4.somafm.com/thetrip-128-mp3",
-      electro:   "https://ice2.somafm.com/deepspaceone-128-mp3"
+      house:     "https://ice4.somafm.com/beatblender-128-mp3  ",
+      techno:    "https://ice4.somafm.com/groovesalad-128-aac  ",
+      dubstep:   "https://ice2.somafm.com/n5md-128-mp3  ",
+      trance:    "https://ice2.somafm.com/live-128-mp3  ",
+      dnb:       "https://ice2.somafm.com/folkfwd-128-mp3  ",
+      lofi:      "https://ice4.somafm.com/suburbsofgoa-128-mp3  ",
+      synthwave: "https://ice4.somafm.com/thetrip-128-mp3  ",
+      electro:   "https://ice2.somafm.com/deepspaceone-128-mp3  "
     };
 
+    // Названия жанров для отображения
     const genreNames = {
       house: 'House', techno: 'Techno', dubstep: 'Dubstep',
       trance: 'Trance', dnb: 'D&B', lofi: 'Lo-fi',
       synthwave: 'Synthwave', electro: 'Electro'
     };
 
+    // Получаем последний выбранный жанр из localStorage или устанавливаем по умолчанию
     let currentGenre = localStorage.getItem('jager-genre') || 'techno';
 
+    // Функция для установки активной кнопки
     function setActiveGenre(genre) {
       genres.forEach(btn => {
         btn.classList.toggle('active', btn.dataset.genre === genre);
       });
+      // Обновляем статус
       status.textContent = `Выбран: ${genreNames[genre] || genre}`;
     }
 
+    // Переключение жанра
     genres.forEach(btn => {
       btn.addEventListener('click', () => {
         const selectedGenre = btn.dataset.genre;
@@ -366,9 +201,11 @@
           currentGenre = selectedGenre;
           localStorage.setItem('jager-genre', currentGenre);
           setActiveGenre(currentGenre);
+          
+          // Если радио играет, останавливаем и готовим к новому запуску
           if (!audio.paused) {
             audio.pause();
-            audio.src = '';
+            audio.src = ''; // Очищаем источник
             playBtn.disabled = false;
             stopBtn.disabled = true;
           }
@@ -376,96 +213,46 @@
       });
     });
 
-    playBtn.addEventListener('click', async () => {
+    // Воспроизведение
+    playBtn.addEventListener('click', () => {
       const streamUrl = streams[currentGenre];
+      
+      // Полностью очищаем предыдущий источник
+      audio.src = '';
       audio.src = streamUrl;
-      try {
-        await audio.play();
-        status.textContent = `🔊 Играет: ${genreNames[currentGenre]}`;
-        nowPlaying.textContent = `🎧 ${genreNames[currentGenre]}`;
-        playBtn.disabled = true;
-        stopBtn.disabled = false;
-      } catch (err) {
-        console.error('Ошибка:', err);
-        status.textContent = `❌ Ошибка: ${err.message}`;
-        playBtn.disabled = false;
-        stopBtn.disabled = true;
-      }
+      
+      audio.play()
+        .then(() => {
+          status.textContent = `🔊 Играет: ${genreNames[currentGenre] || currentGenre}`;
+          nowPlaying.textContent = `🎧 ${genreNames[currentGenre] || currentGenre}`;
+          playBtn.disabled = true;
+          stopBtn.disabled = false;
+        })
+        .catch(err => {
+          console.error('Ошибка воспроизведения:', err);
+          status.textContent = `❌ Ошибка: ${err.message || 'Не удалось запустить'}`;
+          playBtn.disabled = false;
+          stopBtn.disabled = true;
+        });
     });
 
+    // Остановка
     stopBtn.addEventListener('click', () => {
       audio.pause();
-      audio.src = '';
+      audio.src = ''; // Очищаем источник при остановке
       status.textContent = '⏸ Остановлено';
       nowPlaying.textContent = '🎵 Готово к запуску';
       playBtn.disabled = false;
       stopBtn.disabled = true;
     });
 
+    // Инициализация при загрузке страницы
     document.addEventListener('DOMContentLoaded', () => {
       setActiveGenre(currentGenre);
       playBtn.disabled = false;
       stopBtn.disabled = true;
-      nowPlaying.textContent = `🎧 Готов к ${genreNames[currentGenre]}`;
+      nowPlaying.textContent = `🎧 Готов к ${genreNames[currentGenre] || currentGenre}`;
     });
-
-    // === НОВОСТИ BINANCE (через RSSHub с fallback) ===
-    async function fetchNews() {
-      const newsList = document.getElementById('newsList');
-      try {
-        // Попытка получить данные через CORS-прокси
-        const proxyUrl = 'https://api.allorigins.win/raw?url=';
-        const targetUrl = encodeURIComponent('https://rsshub.app/binance/news');
-        const res = await fetch(proxyUrl + targetUrl);
-        
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        
-        const data = await res.json();
-
-        newsList.innerHTML = '';
-        if (data.items && data.items.length > 0) {
-          data.items.slice(0, 5).forEach(item => {
-            const li = document.createElement('li');
-            li.className = 'news-item';
-            const title = item.title.length > 100 ? item.title.substring(0, 100) + '...' : item.title;
-            const description = item.description ? (item.description.length > 200 ? item.description.substring(0, 200) + '...' : item.description) : 'Описание отсутствует';
-            
-            li.innerHTML = `
-              <h3 class="news-title">${title}</h3>
-              <div class="news-body">${description}</div>
-            `;
-            li.addEventListener('click', () => {
-              const body = li.querySelector('.news-body');
-              body.style.display = body.style.display === 'none' ? 'block' : 'none';
-            });
-            newsList.appendChild(li);
-          });
-        } else {
-          newsList.innerHTML = '<li class="news-item"><h3 class="news-title">Новости не найдены</h3></li>';
-        }
-      } catch (err) {
-        console.error('Ошибка получения новостей:', err);
-        // Если не удалось — покажем тестовые новости
-        newsList.innerHTML = `
-          <li class="news-item">
-            <h3 class="news-title">🚀 Binance запускает новый торговый терминал</h3>
-            <div class="news-body">Binance анонсировала запуск нового торгового терминала с улучшенными функциями для профессиональных трейдеров.</div>
-          </li>
-          <li class="news-item">
-            <h3 class="news-title">💰 Цена Bitcoin превысила $100,000</h3>
-            <div class="news-body">Цена Bitcoin достигла нового максимума в $100,000 после роста спроса и внедрения новых технологий.</div>
-          </li>
-          <li class="news-item">
-            <h3 class="news-title">🔄 Обновление Ethereum 2.0 завершено успешно</h3>
-            <div class="news-body">Сеть Ethereum успешно перешла на Proof-of-Stake, что значительно повысило масштабируемость и безопасность сети.</div>
-          </li>
-        `;
-      }
-    }
-
-    // Загружаем новости при старте и обновляем каждые 5 минут
-    fetchNews();
-    setInterval(fetchNews, 300000); // 5 минут
   </script>
 </body>
 </html>
