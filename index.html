@@ -16,15 +16,15 @@
   <meta property="og:title" content="JAGER Radio">
   <meta property="og:description" content="🎧 JAGER Radio BNB — House, Techno, Dubstep, Trance и другие">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://nazarborodin.github.io/Radio-Jager      ">
-  <meta property="og:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg      ">
+  <meta property="og:url" content="https://nazarborodin.github.io/Radio-Jager        ">
+  <meta property="og:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg        ">
 
   <!-- Twitter Card -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://nazarborodin.github.io/Radio-Jager      ">
+  <meta property="twitter:url" content="https://nazarborodin.github.io/Radio-Jager        ">
   <meta property="twitter:title" content="JAGER Radio">
   <meta property="twitter:description" content="🎧 JAGER Radio BNB">
-  <meta property="twitter:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg      ">
+  <meta property="twitter:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg        ">
 
   <!-- PWA -->
   <meta name="theme-color" content="#FFD700">
@@ -156,11 +156,19 @@
     .equalizer-container {
       position: absolute;
       top: 20px;
-      right: 20px;
       display: flex;
       align-items: flex-end;
       height: 100px; /* Уменьшена высота */
       gap: 3px; /* Уменьшен зазор */
+    }
+
+    /* Контейнеры для левого и правого эквалайзера */
+    .equalizer-left {
+        left: 20px;
+    }
+
+    .equalizer-right {
+        right: 20px;
     }
 
     .equalizer-bar {
@@ -211,7 +219,21 @@
 
   <div class="container">
     <!-- Визуализатор добавлен сюда -->
-    <div class="equalizer-container">
+    <div class="equalizer-container equalizer-left">
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+    </div>
+
+    <div class="equalizer-container equalizer-right">
       <div class="equalizer-bar"></div>
       <div class="equalizer-bar"></div>
       <div class="equalizer-bar"></div>
@@ -261,14 +283,14 @@
 
     // 🔉 Прямые ссылки на потоки (убраны пробелы)
     const streams = {
-      house:     "https://ice4.somafm.com/beatblender-128-mp3",
-      techno:    "https://ice4.somafm.com/groovesalad-128-aac",
-      dubstep:   "https://ice2.somafm.com/n5md-128-mp3",
-      trance:    "https://ice2.somafm.com/live-128-mp3",
-      dnb:       "https://ice2.somafm.com/folkfwd-128-mp3",
-      lofi:      "https://ice4.somafm.com/suburbsofgoa-128-mp3",
-      synthwave: "https://ice4.somafm.com/deepspaceone-128-mp3",
-      electro:   "https://ice2.somafm.com/defcon-128-mp3"
+      house:     "  https://ice4.somafm.com/beatblender-128-mp3  ",
+      techno:    "https://ice4.somafm.com/groovesalad-128-aac  ",
+      dubstep:   "https://ice2.somafm.com/n5md-128-mp3  ",
+      trance:    "https://ice2.somafm.com/live-128-mp3  ",
+      dnb:       "https://ice2.somafm.com/folkfwd-128-mp3  ",
+      lofi:      "https://ice4.somafm.com/suburbsofgoa-128-mp3  ",
+      synthwave: "https://ice4.somafm.com/deepspaceone-128-mp3  ",
+      electro:   "https://ice2.somafm.com/defcon-128-mp3  "
     };
 
     // Названия жанров для отображения
