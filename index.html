@@ -52,61 +52,6 @@
       min-height: 100vh;
       color: var(--text);
       text-align: center;
-      overflow: hidden;
-    }
-
-    /* Основной контейнер с flex layout */
-    .main-container {
-      display: flex;
-      width: 100%;
-      height: 100vh;
-    }
-
-    /* Левая часть - плеер */
-    .player-section {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      overflow-y: auto;
-    }
-
-    /* Правая часть - эквалайзер */
-    .equalizer-section {
-      width: 40%;
-      height: 100vh;
-      position: relative;
-      background: #0a0a0a;
-    }
-
-    #chart {
-      width: 100%;
-      height: 100%;
-      background: #111;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .candle {
-      position: absolute;
-      bottom: 0;
-      width: 12px;
-      transition: all 0.3s ease;
-    }
-
-    .wick {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .body {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 8px;
     }
 
     /* Стили для бегущей строки */
@@ -142,6 +87,7 @@
       max-width: 800px;
       width: 90%;
       border: 2px solid var(--border);
+      position: relative; /* Для позиционирования визуализатора */
     }
 
     .brand {
@@ -206,64 +152,99 @@
       font-weight: 700;
     }
 
-    /* Адаптивность для мобильных устройств */
-    @media (max-width: 768px) {
-      .main-container {
-        flex-direction: column;
+    /* Новые стили для визуализатора */
+    .equalizer-container {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: flex-end;
+      height: 100px; /* Уменьшена высота */
+      gap: 3px; /* Уменьшен зазор */
+    }
+
+    .equalizer-bar {
+      width: 8px; /* Уменьшена ширина */
+      background-color: white; /* Белые полосы по умолчанию */
+      border-radius: 2px 2px 0 0;
+      animation: bounce 1.5s infinite ease-in-out;
+      transform-origin: bottom;
+      /* Начальная высота будет задана через JS или CSS для каждой полосы */
+    }
+
+    /* Четвёртая и восьмая полосы (чёрные) */
+    .equalizer-bar:nth-child(4),
+    .equalizer-bar:nth-child(8) {
+      background-color: black;
+    }
+
+    /* Анимации для каждой полосы с разными задержками и начальными высотами */
+    .equalizer-bar:nth-child(1) { animation-delay: 0s; height: 30%; }
+    .equalizer-bar:nth-child(2) { animation-delay: 0.1s; height: 50%; }
+    .equalizer-bar:nth-child(3) { animation-delay: 0.2s; height: 20%; }
+    .equalizer-bar:nth-child(4) { animation-delay: 0.3s; height: 60%; }
+    .equalizer-bar:nth-child(5) { animation-delay: 0.4s; height: 35%; }
+    .equalizer-bar:nth-child(6) { animation-delay: 0.5s; height: 45%; }
+    .equalizer-bar:nth-child(7) { animation-delay: 0.6s; height: 15%; }
+    .equalizer-bar:nth-child(8) { animation-delay: 0.7s; height: 55%; }
+    .equalizer-bar:nth-child(9) { animation-delay: 0.8s; height: 25%; }
+    .equalizer-bar:nth-child(10) { animation-delay: 0.9s; height: 40%; }
+    .equalizer-bar:nth-child(11) { animation-delay: 1.0s; height: 20%; }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: scaleY(0.3); /* Минимальная высота */
       }
-      
-      .player-section {
-        width: 100%;
-        height: auto;
-      }
-      
-      .equalizer-section {
-        width: 100%;
-        height: 40vh;
+      50% {
+        transform: scaleY(1); /* Максимальная высота */
       }
     }
   </style>
 </head>
 <body>
-  <!-- Основной контейнер -->
-  <div class="main-container">
-    <!-- Левая часть - плеер -->
-    <div class="player-section">
-      <!-- Бегущая строка с курсом BNB -->
-      <div class="ticker-container">
-        <div class="ticker-content" id="tickerText">
-          🚀 JAGER Radio BNB | The world's leading blockchain ecosystem BNB: Загрузка... | 24ч: Загрузка...
-        </div>
-      </div>
+  <!-- Бегущая строка с курсом BNB -->
+  <div class="ticker-container">
+    <div class="ticker-content" id="tickerText">
+      🚀 JAGER Radio BNB | The world’s leading blockchain ecosystem BNB! | Price BNB: Загрузка... | 24ч: Загрузка...
+    </div>
+  </div>
 
-      <div class="container">
-        <img src="logo.png" alt="JAGER Radio" class="brand" style="height: 80px;">
-
-        <div class="genres" id="genres">
-          <button class="genre-btn" data-genre="house">🏠 House</button>
-          <button class="genre-btn" data-genre="techno">🏭 Techno</button>
-          <button class="genre-btn" data-genre="dubstep">🔊 Dubstep</button>
-          <button class="genre-btn" data-genre="trance">🌀 Trance</button>
-          <button class="genre-btn" data-genre="dnb">🥁 D&B</button>
-          <button class="genre-btn" data-genre="lofi">🎧 Lo-fi</button>
-          <button class="genre-btn" data-genre="synthwave">📼 Synthwave</button>
-          <button class="genre-btn" data-genre="electro">⚡ Electro</button>
-        </div>
-
-        <div class="now-playing" id="nowPlaying">🎵 JAGER Radio BNB</div>
-
-        <div class="play-controls">
-          <button id="playBtn">▶ PLAY</button>
-          <button id="stopBtn" disabled>⏹ STOP</button>
-        </div>
-        <div class="status" id="status">JAGER Radio BNB</div>
-      </div>
+  <div class="container">
+    <!-- Визуализатор добавлен сюда -->
+    <div class="equalizer-container">
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
+      <div class="equalizer-bar"></div>
     </div>
 
-    <!-- Правая часть - эквалайзер -->
-    <div class="equalizer-section">
-      <div id="chart"></div>
+    <img src="logo.png" alt="JAGER Radio" class="brand" style="height: 80px;">
+
+    <div class="genres" id="genres">
+      <button class="genre-btn" data-genre="house">🏠 House</button>
+      <button class="genre-btn" data-genre="techno">🏭 Techno</button>
+      <button class="genre-btn" data-genre="dubstep">🔊 Dubstep</button>
+      <button class="genre-btn" data-genre="trance">🌀 Trance</button>
+      <button class="genre-btn" data-genre="dnb">🥁 D&B</button>
+      <button class="genre-btn" data-genre="lofi">🎧 Lo-fi</button>
+      <button class="genre-btn" data-genre="synthwave">📼 Synthwave</button>
+      <button class="genre-btn" data-genre="electro">⚡ Electro</button>
     </div>
+
+    <div class="now-playing" id="nowPlaying">🎵 JAGER Radio BNB</div>
+
+    <div class="play-controls">
+      <button id="playBtn">▶ PLAY</button>
+      <button id="stopBtn" disabled>⏹ STOP</button>
+    </div>
+    <div class="status" id="status">JAGER Radio BNB</div>
   </div>
 
   <audio id="radioPlayer"></audio>
@@ -343,7 +324,6 @@
           nowPlaying.textContent = `🎧 ${genreNames[currentGenre] || currentGenre}`;
           playBtn.disabled = true;
           stopBtn.disabled = false;
-          startAnimation(); // Запускаем эквалайзер при воспроизведении
         })
         .catch(err => {
           console.error('Ошибка воспроизведения:', err);
@@ -361,10 +341,9 @@
       nowPlaying.textContent = '🎵 JAGER Radio BNB';
       playBtn.disabled = false;
       stopBtn.disabled = true;
-      stopAnimation(); // Останавливаем эквалайзер при остановке
     });
 
-    // --- Логика для бегущей строки с курсом BNB ---
+    // --- Логика для бегущей строки с курсом BNB --- //
     let bnbData = {
         price: 0,
         change24h: 0
@@ -384,7 +363,7 @@
             }
         } catch (error) {
             console.error('Ошибка при получении курса BNB:', error);
-            tickerText.textContent = '🚀 JAGER Radio BNB | The world's leading blockchain ecosystem BNB! | Price BNB: Ошибка загрузки | 24ч: Ошибка';
+            tickerText.textContent = '🚀 JAGER Radio BNB | The world’s leading blockchain ecosystem BNB! | Price BNB: Ошибка загрузки | 24ч: Ошибка';
         }
     }
 
@@ -394,7 +373,7 @@
         const changeSymbol = bnbData.change24h >= 0 ? '+' : '';
         const changeColor = bnbData.change24h >= 0 ? '🟢' : '🔴';
         
-        tickerText.textContent = `🚀 JAGER Radio BNB | The world's leading blockchain ecosystem BNB! | Price BNB: ${priceFormatted} | 24ч: ${changeColor} ${changeSymbol}${changeFormatted}%`;
+        tickerText.textContent = `🚀 JAGER Radio BNB | The world’s leading blockchain ecosystem BNB! | Price BNB: ${priceFormatted} | 24ч: ${changeColor} ${changeSymbol}${changeFormatted}%`;
     }
 
     // Инициализация при загрузке страницы
@@ -409,96 +388,6 @@
       // Обновляем курс каждые 30 секунд
       setInterval(fetchBNBPrice, 30000);
     });
-
-    // === ЭКВАЛАЙЗЕР СВЕЧЕЙ ===
-    let animationId;
-    let isPlaying = false;
-    
-    // Генерация случайной свечи
-    function generateCandle(x, maxHeight) {
-      const chart = document.getElementById('chart');
-      const candle = document.createElement('div');
-      candle.className = 'candle';
-      
-      // Случайные значения для свечи
-      const open = Math.random() * maxHeight * 0.8 + maxHeight * 0.1;
-      const close = Math.random() * maxHeight * 0.8 + maxHeight * 0.1;
-      const high = Math.max(open, close) + Math.random() * 30;
-      const low = Math.min(open, close) - Math.random() * 30;
-      
-      const isGreen = close > open;
-      const bodyHeight = Math.abs(close - open);
-      const wickHeight = high - low;
-      const bodyTop = maxHeight - Math.max(open, close);
-      const wickTop = maxHeight - high;
-      
-      // Создаем фитиль
-      const wick = document.createElement('div');
-      wick.className = 'wick';
-      wick.style.height = `${wickHeight}px`;
-      wick.style.top = `${wickTop}px`;
-      wick.style.width = '2px';
-      wick.style.background = isGreen ? '#00ff00' : '#ff0000';
-      
-      // Создаем тело свечи
-      const body = document.createElement('div');
-      body.className = 'body';
-      body.style.height = `${bodyHeight}px`;
-      body.style.top = `${bodyTop}px`;
-      body.style.background = isGreen ? '#006600' : '#660000';
-      
-      candle.appendChild(wick);
-      candle.appendChild(body);
-      candle.style.left = `${x}px`;
-      candle.style.height = `${maxHeight}px`;
-      
-      chart.appendChild(candle);
-      
-      return candle;
-    }
-    
-    // Анимация эквалайзера
-    function animateEqualizer() {
-      const chart = document.getElementById('chart');
-      const chartWidth = chart.offsetWidth;
-      const chartHeight = chart.offsetHeight;
-      
-      // Очищаем старые свечи
-      chart.innerHTML = '';
-      
-      // Создаем новые свечи
-      const candleCount = Math.floor(chartWidth / 20);
-      for (let i = 0; i < candleCount; i++) {
-        const x = i * 20 + 5;
-        const maxHeight = chartHeight * (0.2 + Math.random() * 0.8);
-        generateCandle(x, maxHeight);
-      }
-      
-      if (isPlaying) {
-        animationId = setTimeout(animateEqualizer, 200);
-      }
-    }
-    
-    // Запуск анимации
-    function startAnimation() {
-      if (animationId) {
-        clearTimeout(animationId);
-      }
-      isPlaying = true;
-      animateEqualizer();
-    }
-    
-    // Остановка анимации
-    function stopAnimation() {
-      isPlaying = false;
-      if (animationId) {
-        clearTimeout(animationId);
-        animationId = null;
-      }
-      // Очищаем график
-      const chart = document.getElementById('chart');
-      chart.innerHTML = '';
-    }
   </script>
 </body>
 </html>
