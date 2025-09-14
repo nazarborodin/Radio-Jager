@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>JAGER Radio</title>
 
-  <!-- Favicon -->                                                                                                                                                                                                                    
+  <!-- Favicon -->
   <link rel="icon" href="favicon.png" sizes="192x192">
   <link rel="apple-touch-icon" href="favicon.png">
 
@@ -16,15 +16,15 @@
   <meta property="og:title" content="JAGER Radio">
   <meta property="og:description" content="🎧 JAGER Radio BNB — House, Techno, Dubstep, Trance и другие">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://nazarborodin.github.io/Radio-Jager    ">
-  <meta property="og:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg    ">
+  <meta property="og:url" content="https://nazarborodin.github.io/Radio-Jager">
+  <meta property="og:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg">
 
   <!-- Twitter Card -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://nazarborodin.github.io/Radio-Jager    ">
+  <meta property="twitter:url" content="https://nazarborodin.github.io/Radio-Jager">
   <meta property="twitter:title" content="JAGER Radio">
   <meta property="twitter:description" content="🎧 JAGER Radio BNB">
-  <meta property="twitter:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg    ">
+  <meta property="twitter:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg">
 
   <!-- PWA -->
   <meta name="theme-color" content="#FFD700">
@@ -256,7 +256,7 @@
     const tickerText = document.getElementById('tickerText');
     const equalizer = document.getElementById('equalizer');
 
-    // 🔉 Прямые ссылки на потоки (убраны пробелы)
+    // 🔉 Прямые ссылки на потоки (проверенные)
     const streams = {
       house:     "https://ice4.somafm.com/beatblender-128-mp3",
       techno:    "https://ice4.somafm.com/groovesalad-128-aac",
@@ -275,7 +275,7 @@
       synthwave: 'Synthwave', electro: 'Electro'
     };
 
-    // Получаем последний выбранный жанр из localStorage или устанавливаем по умолчанию
+    // Получаем последний выбранный жанр из localStorage
     let currentGenre = localStorage.getItem('jager-genre') || 'techno';
 
     // Функция для установки активной кнопки
@@ -283,7 +283,6 @@
       genres.forEach(btn => {
         btn.classList.toggle('active', btn.dataset.genre === genre);
       });
-      // Обновляем статус
       status.textContent = `Выбран: ${genreNames[genre] || genre}`;
     }
 
@@ -296,10 +295,9 @@
           localStorage.setItem('jager-genre', currentGenre);
           setActiveGenre(currentGenre);
           
-          // Если радио играет, останавливаем и готовим к новому запуску
           if (!audio.paused) {
             audio.pause();
-            audio.src = ''; // Очищаем источник
+            audio.src = '';
             playBtn.disabled = false;
             stopBtn.disabled = true;
           }
@@ -309,10 +307,8 @@
 
     // Воспроизведение
     playBtn.addEventListener('click', () => {
-      const streamUrl = streams[currentGenre].trim(); // Убедимся, что нет пробелов
+      const streamUrl = streams[currentGenre];
       
-      // Полностью очищаем предыдущий источник
-      audio.src = '';
       audio.src = streamUrl;
       
       audio.play()
@@ -322,7 +318,7 @@
           playBtn.disabled = true;
           stopBtn.disabled = false;
           
-          // Запускаем анимацию эквалайзера
+          // Запускаем эквалайзер
           startEqualizerAnimation();
         })
         .catch(err => {
@@ -336,13 +332,12 @@
     // Остановка
     stopBtn.addEventListener('click', () => {
       audio.pause();
-      audio.src = ''; // Очищаем источник при остановке
+      audio.src = '';
       status.textContent = '⏸ STOP';
       nowPlaying.textContent = '🎵 JAGER Radio BNB';
       playBtn.disabled = false;
       stopBtn.disabled = true;
       
-      // Останавливаем анимацию эквалайзера
       stopEqualizerAnimation();
     });
 
@@ -390,7 +385,7 @@
         const ray = document.createElement('div');
         ray.className = 'ray';
         
-        // Цвет луча в зависимости от позиции (в соответствии с картинкой)
+        // Цвет луча
         if (i % 3 === 0) {
           ray.classList.add('yellow');
         } else if (i % 3 === 1) {
@@ -408,7 +403,7 @@
         equalizer.appendChild(ray);
         rays.push(ray);
         
-        // Создаем точку для баса
+        // Точка для баса
         const dot = document.createElement('div');
         dot.className = 'dot';
         dot.style.transform = `rotate(${angle}rad)`;
@@ -422,50 +417,38 @@
     }
 
     function startEqualizerAnimation() {
-      // Сначала создаем лучи, если их еще нет
-      if (rays.length === 0) {
-        createRays();
-      }
-      
-      // Анимация лучей
-      let animationId;
+      if (rays.length === 0) createRays();
+
+      const analyser = new (window.AudioContext || window.webkitAudioContext)();
+      const source = analyser.createMediaElementSource(audio);
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+
+      source.connect(analyser.input);
+      analyser.connect(analyser.destination);
+
       let lastTime = 0;
-      
+
       function animate(time) {
         if (!lastTime) lastTime = time;
         const deltaTime = time - lastTime;
         lastTime = time;
-        
-        // Получаем данные аудио
-        const analyser = new (window.AudioContext || window.webkitAudioContext)();
-        const source = analyser.createMediaElementSource(audio);
-        const bufferLength = analyser.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
-        source.connect(analyser.input);
-        analyser.connect(analyser.destination);
-        
-        // Получаем уровень звука
+
         analyser.getByteFrequencyData(dataArray);
-        
-        // Вычисляем среднюю амплитуду
-        let sum = 0;
-        for (let i = 0; i < dataArray.length; i++) {
-          sum += dataArray[i];
-        }
-        const avgAmplitude = sum / dataArray.length;
-        
+
         // Пульсация лучей
+        const avgAmplitude = dataArray.reduce((sum, val) => sum + val, 0) / dataArray.length;
+        const pulseFactor = 1 + (avgAmplitude / 255) * 0.5;
+
         rays.forEach((ray, index) => {
           const angle = (index / rayCount) * Math.PI * 2;
           const baseLength = 90;
-          const pulseFactor = 1 + (avgAmplitude / 255) * 0.5;
           const length = baseLength * pulseFactor;
-          
           ray.style.height = `${length}px`;
         });
-        
-        // Анимация точек при басах
-        const bassLevel = dataArray[0]; // Используем низкие частоты
+
+        // Точки при басах
+        const bassLevel = dataArray[0] + dataArray[1]; // Низкие частоты
         dots.forEach((dot, index) => {
           const angle = (index / rayCount) * Math.PI * 2;
           const distance = 100;
@@ -482,36 +465,30 @@
             dot.style.opacity = 0;
           }
         });
-        
-        animationId = requestAnimationFrame(animate);
+
+        requestAnimationFrame(animate);
       }
-      
-      // Запускаем анимацию
+
       requestAnimationFrame(animate);
     }
 
     function stopEqualizerAnimation() {
-      // Очистка анимации
-      cancelAnimationFrame(animationId);
-      
-      // Сбрасываем все лучи и точки
+      // Очистим все лучи
       rays.forEach(ray => {
         ray.style.height = '90px';
       });
-      
       dots.forEach(dot => {
         dot.style.opacity = 0;
       });
     }
 
-    // Инициализация при загрузке страницы
+    // Инициализация
     document.addEventListener('DOMContentLoaded', () => {
       setActiveGenre(currentGenre);
       playBtn.disabled = false;
       stopBtn.disabled = true;
       nowPlaying.textContent = `🎧 PLAY к ${genreNames[currentGenre] || currentGenre}`;
       
-      // Инициализируем бегущую строку
       fetchBNBPrice();
       setInterval(fetchBNBPrice, 30000);
     });
