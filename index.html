@@ -299,7 +299,7 @@
             }
         } catch (error) {
             console.error('Ошибка при получении курса BNB:', error);
-            tickerText.textContent = '🚀 JAGER Radio BNB | Получай BNB за прослушивание! | Актуальный курс BNB: Ошибка загрузки | 24ч: Ошибка';
+            tickerText.textContent = '🚀 JAGER Radio BNB | The world’s leading blockchain ecosystem BNB! | Price BNB: Ошибка загрузки | 24ч: Ошибка';
         }
     }
 
@@ -309,7 +309,7 @@
         const changeSymbol = bnbData.change24h >= 0 ? '+' : '';
         const changeColor = bnbData.change24h >= 0 ? '🟢' : '🔴';
         
-        tickerText.textContent = `🚀 JAGER Radio BNB | Получай BNB за прослушивание! | Актуальный курс BNB: ${priceFormatted} | 24ч: ${changeColor} ${changeSymbol}${changeFormatted}%`;
+        tickerText.textContent = `🚀 JAGER Radio BNB | The world’s leading blockchain ecosystem BNB! | Price BNB: ${priceFormatted} | 24ч: ${changeColor} ${changeSymbol}${changeFormatted}%`;
     }
 
     // Инициализация при загрузке страницы
