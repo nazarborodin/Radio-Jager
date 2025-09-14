@@ -305,42 +305,6 @@
       });
     });
 
-    // Воспроизведение
-    playBtn.addEventListener('click', () => {
-      const streamUrl = streams[currentGenre];
-      
-      audio.src = streamUrl;
-      
-      audio.play()
-        .then(() => {
-          status.textContent = `🔊 PLAY: ${genreNames[currentGenre] || currentGenre}`;
-          nowPlaying.textContent = `🎧 ${genreNames[currentGenre] || currentGenre}`;
-          playBtn.disabled = true;
-          stopBtn.disabled = false;
-          
-          // Запускаем эквалайзер
-          startEqualizerAnimation();
-        })
-        .catch(err => {
-          console.error('Ошибка воспроизведения:', err);
-          status.textContent = `❌ Ошибка: ${err.message || 'Не удалось запустить'}`;
-          playBtn.disabled = false;
-          stopBtn.disabled = true;
-        });
-    });
-
-    // Остановка
-    stopBtn.addEventListener('click', () => {
-      audio.pause();
-      audio.src = '';
-      status.textContent = '⏸ STOP';
-      nowPlaying.textContent = '🎵 JAGER Radio BNB';
-      playBtn.disabled = false;
-      stopBtn.disabled = true;
-      
-      stopEqualizerAnimation();
-    });
-
     // --- Логика для бегущей строки с курсом BNB ---
     let bnbData = {
         price: 0,
@@ -385,7 +349,6 @@
         const ray = document.createElement('div');
         ray.className = 'ray';
         
-        // Цвет луча
         if (i % 3 === 0) {
           ray.classList.add('yellow');
         } else if (i % 3 === 1) {
@@ -403,7 +366,6 @@
         equalizer.appendChild(ray);
         rays.push(ray);
         
-        // Точка для баса
         const dot = document.createElement('div');
         dot.className = 'dot';
         dot.style.transform = `rotate(${angle}rad)`;
@@ -419,13 +381,25 @@
     function startEqualizerAnimation() {
       if (rays.length === 0) createRays();
 
-      const analyser = new (window.AudioContext || window.webkitAudioContext)();
-      const source = analyser.createMediaElementSource(audio);
+      // Очистим старый контекст
+      if (window.audioContext) {
+        window.audioContext.close();
+      }
+
+      window.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const source = audio.captureStream ? audio.captureStream().getAudioTracks()[0] : null;
+
+      if (!source) return;
+
+      const analyser = window.audioContext.createAnalyser();
+      analyser.fftSize = 256;
       const bufferLength = analyser.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
 
-      source.connect(analyser.input);
-      analyser.connect(analyser.destination);
+      // Создаем источник из элемента
+      const mediaSource = window.audioContext.createMediaElementSource(audio);
+      mediaSource.connect(analyser);
+      analyser.connect(window.audioContext.destination);
 
       let lastTime = 0;
 
@@ -436,7 +410,6 @@
 
         analyser.getByteFrequencyData(dataArray);
 
-        // Пульсация лучей
         const avgAmplitude = dataArray.reduce((sum, val) => sum + val, 0) / dataArray.length;
         const pulseFactor = 1 + (avgAmplitude / 255) * 0.5;
 
@@ -447,8 +420,7 @@
           ray.style.height = `${length}px`;
         });
 
-        // Точки при басах
-        const bassLevel = dataArray[0] + dataArray[1]; // Низкие частоты
+        const bassLevel = dataArray[0] + dataArray[1];
         dots.forEach((dot, index) => {
           const angle = (index / rayCount) * Math.PI * 2;
           const distance = 100;
@@ -473,7 +445,10 @@
     }
 
     function stopEqualizerAnimation() {
-      // Очистим все лучи
+      if (window.audioContext) {
+        window.audioContext.close();
+      }
+      
       rays.forEach(ray => {
         ray.style.height = '90px';
       });
@@ -481,6 +456,42 @@
         dot.style.opacity = 0;
       });
     }
+
+    // Воспроизведение
+    playBtn.addEventListener('click', () => {
+      const streamUrl = streams[currentGenre];
+      
+      audio.src = streamUrl;
+      
+      audio.play()
+        .then(() => {
+          status.textContent = `🔊 PLAY: ${genreNames[currentGenre] || currentGenre}`;
+          nowPlaying.textContent = `🎧 ${genreNames[currentGenre] || currentGenre}`;
+          playBtn.disabled = true;
+          stopBtn.disabled = false;
+          
+          // Запускаем эквалайзер
+          startEqualizerAnimation();
+        })
+        .catch(err => {
+          console.error('Ошибка воспроизведения:', err);
+          status.textContent = `❌ Ошибка: ${err.message || 'Не удалось запустить'}`;
+          playBtn.disabled = false;
+          stopBtn.disabled = true;
+        });
+    });
+
+    // Остановка
+    stopBtn.addEventListener('click', () => {
+      audio.pause();
+      audio.src = '';
+      status.textContent = '⏸ STOP';
+      nowPlaying.textContent = '🎵 JAGER Radio BNB';
+      playBtn.disabled = false;
+      stopBtn.disabled = true;
+      
+      stopEqualizerAnimation();
+    });
 
     // Инициализация
     document.addEventListener('DOMContentLoaded', () => {
