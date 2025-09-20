@@ -255,14 +255,11 @@
       }
 
       .genres {
-        /* grid-template-columns: repeat(2, 1fr); */
-        /* gap: 15px; */
         gap: 10px; /* Уменьшенный отступ между кнопками */
         margin: 30px 0;
       }
 
       .genre-btn {
-        /* padding: 15px 10px; */
         padding: 12px 8px; /* Уменьшенный padding */
         border-radius: 20px;
         font-size: 1.1em; /* Немного уменьшенный шрифт */
@@ -342,7 +339,6 @@
       }
 
       .genres {
-        /* grid-template-columns: repeat(2, 1fr); */
         gap: 8px; /* Еще меньший отступ между кнопками */
         margin: 25px 0;
       }
@@ -394,6 +390,54 @@
         width: 6px;
         border-radius: 1.5px 1.5px 0 0;
       }
+    }
+
+    /* Стили для адресов контрактов */
+    .contract-address {
+      margin: 20px 0;
+      font-family: monospace;
+      font-size: 1.1em;
+      line-height: 1.5;
+      color: #000;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .contract-label {
+      font-weight: bold;
+      color: #000;
+    }
+
+    .contract-value {
+      color: #000;
+      background-color: #fff;
+      padding: 5px;
+      border: 1px solid #000;
+      border-radius: 4px;
+      word-break: break-all;
+    }
+
+    /* Стиль для сообщения "COPIED" */
+    .copied-message {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #000;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-size: 1em;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .copied-message.show {
+      opacity: 1;
     }
   </style>
 </head>
@@ -455,9 +499,22 @@
       <div class="equalizer-bar"></div>
       <div class="equalizer-bar"></div>
     </div>
+
+    <!-- Секция с адресами контрактов -->
+    <div class="contract-address">
+      <div class="contract-label">JRB</div>
+      <div class="contract-value" onclick="copyToClipboard('0x2170ed0880ac9a755fd29b2688956bd959f933f8')">0x2170ed0880ac9a755fd29b2688956bd959f933f8</div>
+    </div>
+    <div class="contract-address">
+      <div class="contract-label">NFT</div>
+      <div class="contract-value" onclick="copyToClipboard('0x55d398326f99059ff775485246999027b3197955')">0x55d398326f99059ff775485246999027b3197955</div>
+    </div>
   </div>
 
   <audio id="radioPlayer"></audio>
+
+  <!-- Сообщение о копировании -->
+  <div class="copied-message" id="copiedMessage">COPIED</div>
 
   <script>
     // Элементы DOM
@@ -598,6 +655,22 @@
       // Обновляем курс каждые 30 секунд
       setInterval(fetchBNBPrice, 30000);
     });
+
+    // Функция для копирования в буфер обмена и показа уведомления
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        // Показываем сообщение
+        const copiedMessage = document.getElementById('copiedMessage');
+        copiedMessage.classList.add('show');
+
+        // Скрываем сообщение через 3 секунды
+        setTimeout(() => {
+          copiedMessage.classList.remove('show');
+        }, 3000);
+      }).catch(err => {
+        console.error('Ошибка при копировании:', err);
+      });
+    }
   </script>
 </body>
 </html>
