@@ -89,6 +89,69 @@
       100% { transform: translateX(-100%); }
     }
 
+    /* Новые стили для адресов контрактов (вверху) */
+    .contracts-section {
+      width: 90%;
+      max-width: 840px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .contract-address {
+      margin: 20px 0;
+      font-family: monospace;
+      font-size: 1.1em;
+      line-height: 1.5;
+      color: #000;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: left;
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 14px 42px rgba(0, 0, 0, 0.1);
+      border: 2.8px solid var(--border);
+    }
+
+    .contract-label {
+      font-weight: bold;
+      color: #000;
+    }
+
+    .contract-value {
+      color: #000;
+      background-color: #fff;
+      padding: 5px;
+      border: 1px solid #000;
+      border-radius: 4px;
+      word-break: break-all;
+    }
+
+    /* Стиль для сообщения "COPIED" */
+    .copied-message {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #000;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-size: 1em;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .copied-message.show {
+      opacity: 1;
+    }
+
+    /* Стили для контейнера радио */
     .container {
       background: rgba(255, 255, 255, 0.95);
       padding: 70px 30px; /* Добавлен горизонтальный padding для мобильных */
@@ -391,54 +454,6 @@
         border-radius: 1.5px 1.5px 0 0;
       }
     }
-
-    /* Стили для адресов контрактов */
-    .contract-address {
-      margin: 20px 0;
-      font-family: monospace;
-      font-size: 1.1em;
-      line-height: 1.5;
-      color: #000;
-      cursor: pointer;
-      user-select: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      text-align: left;
-    }
-
-    .contract-label {
-      font-weight: bold;
-      color: #000;
-    }
-
-    .contract-value {
-      color: #000;
-      background-color: #fff;
-      padding: 5px;
-      border: 1px solid #000;
-      border-radius: 4px;
-      word-break: break-all;
-    }
-
-    /* Стиль для сообщения "COPIED" */
-    .copied-message {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background-color: #000;
-      color: #fff;
-      padding: 10px 15px;
-      border-radius: 5px;
-      font-size: 1em;
-      z-index: 1000;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .copied-message.show {
-      opacity: 1;
-    }
   </style>
 </head>
 <body>
@@ -446,6 +461,18 @@
   <div class="ticker-container">
     <div class="ticker-content" id="tickerText">
       🚀 JAGER Radio BNB | The world's leading blockchain ecosystem BNB! | Price BNB: Загрузка... | 24ч: Загрузка...
+    </div>
+  </div>
+
+  <!-- Секция с адресами контрактов (вверху) -->
+  <div class="contracts-section">
+    <div class="contract-address">
+      <div class="contract-label">JRB</div>
+      <div class="contract-value" onclick="copyToClipboard('0x2170ed0880ac9a755fd29b2688956bd959f933f8')">0x2170ed0880ac9a755fd29b2688956bd959f933f8</div>
+    </div>
+    <div class="contract-address">
+      <div class="contract-label">NFT</div>
+      <div class="contract-value" onclick="copyToClipboard('0x55d398326f99059ff775485246999027b3197955')">0x55d398326f99059ff775485246999027b3197955</div>
     </div>
   </div>
 
@@ -498,16 +525,6 @@
       <div class="equalizer-bar"></div>
       <div class="equalizer-bar"></div>
       <div class="equalizer-bar"></div>
-    </div>
-
-    <!-- Секция с адресами контрактов -->
-    <div class="contract-address">
-      <div class="contract-label">JRB</div>
-      <div class="contract-value" onclick="copyToClipboard('0x2170ed0880ac9a755fd29b2688956bd959f933f8')">0x2170ed0880ac9a755fd29b2688956bd959f933f8</div>
-    </div>
-    <div class="contract-address">
-      <div class="contract-label">NFT</div>
-      <div class="contract-value" onclick="copyToClipboard('0x55d398326f99059ff775485246999027b3197955')">0x55d398326f99059ff775485246999027b3197955</div>
     </div>
   </div>
 
