@@ -89,17 +89,17 @@
       100% { transform: translateX(-100%); }
     }
 
-    /* Новые стили для адресов контрактов (вверху) */
+    /* Стиль для контейнера с адресами контрактов - как на фото */
     .contracts-section {
       width: 90%;
       max-width: 840px;
       margin-bottom: 30px;
       display: flex;
       justify-content: center;
-      align-items: center;
     }
 
     .contract-address {
+      width: 100%;
       margin: 20px 0;
       font-family: monospace;
       font-size: 1.1em;
@@ -113,9 +113,9 @@
       text-align: left;
       background-color: rgba(255, 255, 255, 0.95);
       padding: 20px;
-      border-radius: 14px;
-      box-shadow: 0 14px 42px rgba(0, 0, 0, 0.1);
       border: 2.8px solid var(--border);
+      border-radius: 0; /* Убрано закругление */
+      box-shadow: 0 14px 42px rgba(0, 0, 0, 0.1);
     }
 
     .contract-label {
@@ -464,8 +464,10 @@
     </div>
   </div>
 
-  <!-- Секция с адресами контрактов (вверху) -->
-  <div class="contracts-section">
+  <div class="container">
+    <img src="https://nazarborodin.github.io/Radio-Jager/logo.png" alt="JAGER Radio" class="brand" style="height: auto; max-width: 100%;">
+
+    <!-- Секция с адресами контрактов (внутри контейнера, над жанрами) -->
     <div class="contract-address">
       <div class="contract-label">JRB</div>
       <div class="contract-value" onclick="copyToClipboard('0x2170ed0880ac9a755fd29b2688956bd959f933f8')">0x2170ed0880ac9a755fd29b2688956bd959f933f8</div>
@@ -474,10 +476,6 @@
       <div class="contract-label">NFT</div>
       <div class="contract-value" onclick="copyToClipboard('0x55d398326f99059ff775485246999027b3197955')">0x55d398326f99059ff775485246999027b3197955</div>
     </div>
-  </div>
-
-  <div class="container">
-    <img src="https://nazarborodin.github.io/Radio-Jager/logo.png" alt="JAGER Radio" class="brand" style="height: auto; max-width: 100%;">
 
     <div class="genres" id="genres">
       <button class="genre-btn" data-genre="house">🏠 House</button>
