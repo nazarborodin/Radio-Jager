@@ -16,15 +16,15 @@
   <meta property="og:title" content="JAGER Radio">
   <meta property="og:description" content="🎧 JAGER Radio BNB — House, Techno, Dubstep, Trance и другие">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://nazarborodin.github.io/Radio-Jager          ">
-  <meta property="og:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg          ">
+  <meta property="og:url" content="https://nazarborodin.github.io/Radio-Jager            ">
+  <meta property="og:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg            ">
 
   <!-- Twitter Card -->
   <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://nazarborodin.github.io/Radio-Jager          ">
+  <meta property="twitter:url" content="https://nazarborodin.github.io/Radio-Jager            ">
   <meta property="twitter:title" content="JAGER Radio">
   <meta property="twitter:description" content="🎧 JAGER Radio BNB">
-  <meta property="twitter:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg          ">
+  <meta property="twitter:image" content="https://nazarborodin.github.io/Radio-Jager/preview.jpg            ">
 
   <!-- PWA -->
   <meta name="theme-color" content="#FFD700">
@@ -56,20 +56,20 @@
 
     /* Стили для бегущей строки */
     .ticker-container {
-      width: 90%;
-      max-width: 800px;
+      width: 90%; /* Ширина соответствует контейнеру */
+      max-width: 900px; /* Увеличена ширина до 900px (1.5 * 600px) */
       overflow: hidden;
       background-color: #000;
       color: white;
-      border: 2px solid var(--border);
-      border-radius: 10px;
-      margin-bottom: 20px;
+      border: 3px solid var(--border); /* Увеличена толщина рамки в 1.5 раза (2px * 1.5 = 3px) */
+      border-radius: 15px; /* Увеличен радиус скругления в 1.5 раза (10px * 1.5 = 15px) */
+      margin-bottom: 30px; /* Увеличен отступ снизу в 1.5 раза (20px * 1.5 = 30px) */
       box-sizing: border-box;
     }
 
     .ticker-content {
       white-space: nowrap;
-      padding: 10px 0;
+      padding: 15px 0; /* Увеличен вертикальный padding в 1.5 раза (10px * 1.5 = 15px) */
       display: inline-block;
       animation: ticker-animation 20s linear infinite;
     }
@@ -81,44 +81,44 @@
 
     .container {
       background: rgba(255, 255, 255, 0.95);
-      padding: 50px;
-      border-radius: 25px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      max-width: 800px;
+      padding: 75px; /* Увеличен padding в 1.5 раза (50px * 1.5 = 75px) */
+      border-radius: 37.5px; /* Увеличен радиус скругления в 1.5 раза (25px * 1.5 = 37.5px) */
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1); /* Увеличены тени в 1.5 раза */
+      max-width: 900px; /* Увеличена максимальная ширина до 900px (1.5 * 600px) */
       width: 90%;
-      border: 2px solid var(--border);
+      border: 3px solid var(--border); /* Увеличена толщина рамки в 1.5 раза (2px * 1.5 = 3px) */
       position: relative; /* Для позиционирования визуализатора */
     }
 
     .brand {
-      font-size: 3.5em;
+      font-size: 5.25em; /* Увеличен размер шрифта в 1.5 раза (3.5em * 1.5 = 5.25em) */
       font-weight: 900;
       color: var(--text);
-      letter-spacing: 3px;
-      margin: 5px 0 15px;
+      letter-spacing: 4.5px; /* Увеличен межбуквенный интервал в 1.5 раза (3px * 1.5 = 4.5px) */
+      margin: 7.5px 0 22.5px; /* Увеличены отступы в 1.5 раза */
     }
 
     .genres {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      margin: 30px 0;
+      gap: 22.5px; /* Увеличен gap в 1.5 раза (15px * 1.5 = 22.5px) */
+      margin: 45px 0; /* Увеличены отступы в 1.5 раза (30px * 1.5 = 45px) */
     }
 
     .genre-btn {
       background: var(--accent);
       color: #000;
-      border: 2px solid #000;
-      padding: 15px 10px;
-      border-radius: 20px;
+      border: 3px solid #000; /* Увеличена толщина рамки в 1.5 раза (2px * 1.5 = 3px) */
+      padding: 22.5px 15px; /* Увеличен padding в 1.5 раза */
+      border-radius: 30px; /* Увеличен радиус скругления в 1.5 раза (20px * 1.5 = 30px) */
       cursor: pointer;
-      font-size: 1.1em;
+      font-size: 1.65em; /* Увеличен размер шрифта в 1.5 раза (1.1em * 1.5 = 1.65em) */
       font-weight: 700;
-      box-shadow: 0 4px 0 #000;
+      box-shadow: 0 6px 0 #000; /* Тень оставлена без изменений, так как она уже адаптирована */
     }
 
     .genre-btn:hover {
-      transform: translateY(-3px);
+      transform: translateY(-4.5px); /* Увеличено значение translateY в 1.5 раза (-3px * 1.5 = -4.5px) */
     }
 
     .genre-btn.active {
@@ -129,52 +129,52 @@
     .play-controls button {
       background: var(--accent);
       color: #000;
-      border: 3px solid #000;
-      padding: 14px 30px;
-      font-size: 1.3em;
-      border-radius: 50px;
+      border: 4.5px solid #000; /* Увеличена толщина рамки в 1.5 раза (3px * 1.5 = 4.5px) */
+      padding: 21px 45px; /* Увеличен padding в 1.5 раза */
+      font-size: 1.95em; /* Увеличен размер шрифта в 1.5 раза (1.3em * 1.5 = 1.95em) */
+      border-radius: 75px; /* Увеличен радиус скругления в 1.5 раза (50px * 1.5 = 75px) */
       cursor: pointer;
-      margin: 15px 10px;
+      margin: 22.5px 15px; /* Увеличены отступы в 1.5 раза */
       font-weight: 800;
-      box-shadow: 0 6px 0 #000;
+      box-shadow: 0 9px 0 #000; /* Увеличена тень в 1.5 раза (6px * 1.5 = 9px) */
     }
 
     .now-playing {
-      margin: 20px 0;
-      font-size: 1.3em;
+      margin: 30px 0; /* Увеличены отступы в 1.5 раза (20px * 1.5 = 30px) */
+      font-size: 1.95em; /* Увеличен размер шрифта в 1.5 раза (1.3em * 1.5 = 1.95em) */
       font-weight: 700;
     }
 
     .status {
-      margin-top: 10px;
-      font-size: 1.1em;
-      min-height: 24px;
+      margin-top: 15px; /* Увеличен отступ сверху в 1.5 раза (10px * 1.5 = 15px) */
+      font-size: 1.65em; /* Увеличен размер шрифта в 1.5 раза (1.1em * 1.5 = 1.65em) */
+      min-height: 36px; /* Увеличена минимальная высота в 1.5 раза (24px * 1.5 = 36px) */
       font-weight: 700;
     }
 
     /* Новые стили для визуализатора */
     .equalizer-container {
       position: absolute;
-      bottom: 20px; /* Позиционирование внизу */
+      bottom: 30px; /* Увеличено позиционирование внизу в 1.5 раза (20px * 1.5 = 30px) */
       display: flex;
       align-items: flex-end;
-      height: 100px; /* Уменьшена высота */
-      gap: 3px; /* Уменьшен зазор */
+      height: 150px; /* Увеличена высота в 1.5 раза (100px * 1.5 = 150px) */
+      gap: 4.5px; /* Увеличен зазор в 1.5 раза (3px * 1.5 = 4.5px) */
     }
 
     /* Контейнеры для левого и правого эквалайзера */
     .equalizer-left {
-        left: 20px;
+        left: 30px; /* Увеличено позиционирование слева в 1.5 раза (20px * 1.5 = 30px) */
     }
 
     .equalizer-right {
-        right: 20px;
+        right: 30px; /* Увеличено позиционирование справа в 1.5 раза (20px * 1.5 = 30px) */
     }
 
     .equalizer-bar {
-      width: 8px; /* Уменьшена ширина */
+      width: 12px; /* Увеличена ширина в 1.5 раза (8px * 1.5 = 12px) */
       background-color: yellow; /* Жёлтые полосы по умолчанию */
-      border-radius: 2px 2px 0 0;
+      border-radius: 3px 3px 0 0; /* Увеличен радиус скругления в 1.5 раза */
       animation: bounce 1.5s infinite ease-in-out;
       transform-origin: bottom;
       /* Начальная высота будет задана через JS или CSS для каждой полосы */
@@ -218,7 +218,7 @@
   </div>
 
   <div class="container">
-    <img src="logo.png" alt="JAGER Radio" class="brand" style="height: 80px;">
+    <img src="logo.png" alt="JAGER Radio" class="brand" style="height: 120px;"> <!-- Увеличена высота логотипа в 1.5 раза -->
 
     <div class="genres" id="genres">
       <button class="genre-btn" data-genre="house">🏠 House</button>
@@ -283,14 +283,14 @@
 
     // 🔉 Прямые ссылки на потоки (убраны пробелы)
     const streams = {
-      house:     "    https://ice4.somafm.com/beatblender-128-mp3    ",
-      techno:    "https://ice4.somafm.com/groovesalad-128-aac    ",
-      dubstep:   "https://ice2.somafm.com/n5md-128-mp3    ",
-      trance:    "https://ice2.somafm.com/live-128-mp3    ",
-      dnb:       "https://ice2.somafm.com/folkfwd-128-mp3    ",
-      lofi:      "https://ice4.somafm.com/suburbsofgoa-128-mp3    ",
-      synthwave: "https://ice4.somafm.com/deepspaceone-128-mp3    ",
-      electro:   "https://ice2.somafm.com/defcon-128-mp3    "
+      house:     "      https://ice4.somafm.com/beatblender-128-mp3      ",
+      techno:    "https://ice4.somafm.com/groovesalad-128-aac      ",
+      dubstep:   "https://ice2.somafm.com/n5md-128-mp3      ",
+      trance:    "https://ice2.somafm.com/live-128-mp3      ",
+      dnb:       "https://ice2.somafm.com/folkfwd-128-mp3      ",
+      lofi:      "https://ice4.somafm.com/suburbsofgoa-128-mp3      ",
+      synthwave: "https://ice4.somafm.com/deepspaceone-128-mp3      ",
+      electro:   "https://ice2.somafm.com/defcon-128-mp3      "
     };
 
     // Названия жанров для отображения
